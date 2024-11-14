@@ -1,0 +1,10 @@
+services:
+  authorization-api-db:
+    image: auth-api-image
+    restart: always
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_DB=authorization_users"
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    ports:
+      - 15432:5432
