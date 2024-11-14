@@ -1,4 +1,4 @@
-﻿namespace Authorization.Api.Config;
+﻿namespace Authorization.Domain.Config;
 
 public class JwtSettings
 {

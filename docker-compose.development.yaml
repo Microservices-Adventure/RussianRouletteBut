@@ -1,10 +1,15 @@
 services:
-  authorization-api-db:
-    image: auth-api-image
+  authorization-db:
+    image: postgres:latest
     restart: always
     environment:
       - "POSTGRES_USER=postgres"
-      - "POSTGRES_DB=authorization_users"
+      - "POSTGRES_DB=auth-users-db"
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     ports:
       - 15432:5432
+    volumes:
+      - auth-users-dbdata:/var/lib/postgresql/auth-users/data
+
+volumes:
+    auth-users-dbdata:

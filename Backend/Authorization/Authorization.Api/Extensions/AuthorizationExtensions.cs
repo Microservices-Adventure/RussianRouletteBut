@@ -1,4 +1,4 @@
-﻿using Authorization.Api.Config;
+﻿using Authorization.Domain.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
