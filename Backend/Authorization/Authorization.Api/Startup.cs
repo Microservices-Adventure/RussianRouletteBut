@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Authorization.Api.Config;
+using Authorization.Api.Extensions;
+using Microsoft.Extensions.Options;
 using System.Runtime;
 
 namespace Authorization.Api;
@@ -16,6 +18,8 @@ public class Startup
         services.AddControllers();
         services.AddSwaggerGen();
         services.AddEndpointsApiExplorer();
+
+        services.AddAuthorizationServices(_configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>()!);
     }
 
     public void Configure(IApplicationBuilder app, IHostEnvironment env)

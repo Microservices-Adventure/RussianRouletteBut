@@ -15,6 +15,8 @@ public class Program
 
                 config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                       .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+                config.AddJsonFile("appsettings.secrets.json", optional: true, reloadOnChange: true);
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {
