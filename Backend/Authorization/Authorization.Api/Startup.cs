@@ -1,11 +1,15 @@
-﻿using Authorization.Domain.Config;
+﻿using Authorization.Api.BackgroundServices;
+using Authorization.Api.Config;
 using Authorization.Api.Extensions;
+using Authorization.Domain.Config;
 using Authorization.Domain.Entities;
+using Authorization.Domain.Services;
+using Authorization.Domain.Services.Interfaces;
+using Authorization.Domain.Validators;
 using Authorization.Infrastructure.Persistence;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Runtime;
 using Microsoft.OpenApi.Models;
 
 namespace Authorization.Api;
@@ -44,7 +48,7 @@ public class Startup
                                 Id = "Bearer"
                             }
                         },
-                        new string[]{}
+                        Array.Empty<string>()
                     }
                 });
         });
@@ -52,6 +56,7 @@ public class Startup
 
         services.AddAuthorizationServices(_configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>()!);
 
+        services.Configure<JwtSettings>(_configuration.GetSection(nameof(KafkaSettings)));
         services.Configure<JwtSettings>(_configuration.GetSection(nameof(JwtSettings)));
 
         services
@@ -69,6 +74,12 @@ public class Startup
         {
             options.UseNpgsql(connectionString);
         });
+
+        services.AddValidatorsFromAssemblyContaining<RegisterUserModelValidator>();
+
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddHostedService<RegisterBackgroundService>();
     }
 
     public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -77,6 +88,7 @@ public class Startup
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseDeveloperExceptionPage();
         }
 
         using (var scope = app.ApplicationServices.CreateScope())
