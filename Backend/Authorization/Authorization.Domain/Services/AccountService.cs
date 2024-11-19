@@ -9,7 +9,7 @@ namespace Authorization.Domain.Services;
 public class AccountService : IAccountService
 {
     private readonly UserManager<User> _userManager;
-    private readonly IValidator<RegisterUserModel> _userModelValidator; 
+    private readonly IValidator<RegisterUserModel> _userModelValidator;
 
     public AccountService(UserManager<User> userManager, IValidator<RegisterUserModel> userModelValidator)
     {

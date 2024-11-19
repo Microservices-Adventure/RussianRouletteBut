@@ -30,7 +30,7 @@ public class RegisterConsumer : IDisposable
             });
 
         _logger = logger;
-        
+
         _consumer = builder.Build();
         _consumer.Subscribe(topic);
         _accountService = accountService;

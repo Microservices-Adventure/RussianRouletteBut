@@ -67,7 +67,7 @@ public class Startup
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
             })
-            .AddEntityFrameworkStores<AppDbContext>(); 
+            .AddEntityFrameworkStores<AppDbContext>();
 
         var connectionString = _configuration["ConnectionStrings:DefaultConnection"]!;
         services.AddDbContext<AppDbContext>(options =>

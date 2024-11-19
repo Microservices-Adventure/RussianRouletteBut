@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.FileProviders;
-
-namespace Frontend.App;
+﻿namespace Frontend.App;
 
 public class Startup
 {

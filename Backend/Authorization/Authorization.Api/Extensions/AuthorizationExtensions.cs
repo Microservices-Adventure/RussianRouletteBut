@@ -1,11 +1,6 @@
 ﻿using Authorization.Domain.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Runtime;
 using System.Text;
 
 namespace Authorization.Api.Extensions;
