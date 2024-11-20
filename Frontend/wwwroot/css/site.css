@@ -1,12 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+.jetbrains-mono-300 {
+    font-family: "JetBrains Mono", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
   html {
     font-size: 16px;
+    font-family: jet
   }
 }
+
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -19,4 +30,20 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.app-bg-black {
+    background: #101015;
+}
+
+.app-text-yellow {
+    color: #F8B475 !important;
+}
+
+.app-text-orange {
+    color: #F89A75 !important;
+}
+
+.app-text-red {
+    color: #F44019 !important;
 }
