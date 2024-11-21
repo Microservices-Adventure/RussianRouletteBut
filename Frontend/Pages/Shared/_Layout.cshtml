@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/Frontend.styles.css" asp-append-version="true" />
 </head>
 <body class="app-bg-black text-white jetbrains-mono-300">
-    <header class="container-lg">
+    <header class="container-xxl">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark app-bg-black border-bottom box-shadow mb-3">
             <div class="container-md">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RRB</a>
@@ -20,24 +20,24 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link app-text-yellow" asp-area="" asp-controller="Home" asp-action="Index">Войти</a>
+                            <a class="nav-link app-text-yellow" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link app-text-orange" asp-area="" asp-controller="Home" asp-action="Privacy">Регистрация</a>
+                            <a class="nav-link app-text-orange" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid px-5">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="footer text-muted">
-        <div class="border-top container-lg">
+        <div class="border-top container-xxl">
             &copy; 2024 - Russian Roulette But - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>

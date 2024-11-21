@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
 .jetbrains-mono-300 {
-    font-family: "JetBrains Mono", serif;
+    font-family: "JetBrains Mono", Arial, Helvetica, sans-serif;
     font-optical-sizing: auto;
     font-weight: 300;
     font-style: normal;
@@ -12,10 +12,9 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-    font-family: jet
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 
@@ -24,8 +23,8 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
