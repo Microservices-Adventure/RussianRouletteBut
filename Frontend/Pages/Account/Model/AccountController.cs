@@ -24,13 +24,12 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult Register(RegisterModel registerModel)
     {
-
-        return RedirectToAction("RegisterSend", "Account");
+        return RedirectToAction("RegisterSend", "Account", registerModel);
     }
 
     public IActionResult RegisterSend(RegisterModel registerModel)
     {
-
+        ViewData["username"] = registerModel.Username;
         return View();
     }
 }
