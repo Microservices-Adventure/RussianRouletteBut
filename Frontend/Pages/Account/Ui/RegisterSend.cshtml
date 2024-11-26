@@ -1,0 +1,17 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Готово";
+}
+<div class="text-center mt-5">
+    @if (ViewData["username"] != null)
+    {
+        <h2>Привет, @ViewData["username"]! </h2><br/>
+        <h3>Заявка на регистрацию отправлена!</h3>
+    }
+    else
+    {
+        <h2>Кто ты, и как ты сюда попал?</h2>
+    }
+</div>
