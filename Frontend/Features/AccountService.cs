@@ -16,7 +16,7 @@ public class AccountService : IAccountService
     {
         _registerProducer = new RegisterProducer(
             kafkaSettings.Value.BootstrapServers,
-            kafkaSettings.Value.RegisterTopic,
+            kafkaSettings.Value.RegistrationTopic,
             registerProducerLogger);
     }
     

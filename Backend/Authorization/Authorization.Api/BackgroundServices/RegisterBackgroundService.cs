@@ -8,13 +8,17 @@ namespace Authorization.Api.BackgroundServices;
 public class RegisterBackgroundService : BackgroundService
 {
     private readonly RegisterConsumer _registerConsumer;
+    private readonly IServiceScope _scope;
 
-    public RegisterBackgroundService(IOptions<KafkaSettings> kafkaOptions, ILogger<RegisterConsumer> consumerLogger, IAccountService accountService)
+    public RegisterBackgroundService(IOptions<KafkaSettings> kafkaOptions, ILogger<RegisterConsumer> consumerLogger, IServiceScopeFactory serviceScopeFactory)
     {
+        _scope = serviceScopeFactory.CreateScope();
+        var accountService = _scope.ServiceProvider.GetRequiredService<IAccountService>();
+        
         _registerConsumer = new RegisterConsumer(
             kafkaOptions.Value.BootstrapServers,
-            kafkaOptions.Value.ConsumerGroupId,
             kafkaOptions.Value.Topic,
+            kafkaOptions.Value.ConsumerGroupId,
             consumerLogger,
             accountService);
     }
@@ -22,6 +26,7 @@ public class RegisterBackgroundService : BackgroundService
     public override Task StopAsync(CancellationToken cancellationToken)
     {
         _registerConsumer.Dispose();
+        _scope.Dispose();
         return base.StopAsync(cancellationToken);
     }
 

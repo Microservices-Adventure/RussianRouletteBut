@@ -92,7 +92,7 @@ public static class ServiceCollectionExtensions
         });
         services.AddEndpointsApiExplorer();
 
-        services.Configure<JwtSettings>(configuration.GetSection(nameof(KafkaSettings)));
+        services.Configure<KafkaSettings>(configuration.GetSection(nameof(KafkaSettings)));
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
 
         return services;

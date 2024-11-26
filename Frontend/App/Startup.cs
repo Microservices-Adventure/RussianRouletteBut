@@ -1,4 +1,5 @@
 using Frontend.App.Config;
+using Frontend.Features;
 using Frontend.Features.Interfaces;
 
 namespace Frontend.App;
@@ -34,7 +35,7 @@ public class Startup
         
         services.Configure<KafkaSettings>(_configuration.GetSection(nameof(KafkaSettings)));
 
-        services.AddSingleton<IAccountService, IAccountService>();
+        services.AddSingleton<IAccountService, AccountService>();
     }
 
     public void Configure(IApplicationBuilder app, IHostEnvironment env)

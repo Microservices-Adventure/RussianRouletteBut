@@ -6,7 +6,7 @@ namespace Frontend.App.Kafka;
 
 public class RegisterProducer : IDisposable
 {
-    private readonly IProducer<Ignore, string> _producer;
+    private readonly IProducer<long, string> _producer;
     private readonly string _topic;
     private readonly ILogger<RegisterProducer> _logger;
 
@@ -17,8 +17,8 @@ public class RegisterProducer : IDisposable
     {
         _topic = topic;
         _logger = producerLogger;
-        var builder = new ProducerBuilder<Ignore, string>(new ProducerConfig{
-                BootstrapServers = bootstrapServers
+        var builder = new ProducerBuilder<long, string>(new ProducerConfig{
+                BootstrapServers = bootstrapServers,
             });
 
         _producer = builder.Build();
@@ -26,16 +26,20 @@ public class RegisterProducer : IDisposable
 
     public async Task Register(RegisterModel registerModel)
     {
+        CancellationTokenSource cancelTokenSource = new CancellationTokenSource(); 
+        CancellationToken token = cancelTokenSource.Token;
+        
         string registerJson = JsonSerializer.Serialize(registerModel);
-        _logger.LogDebug("Produce register request.{newline}Topic: {topic}Request: {registerJson}", 
+        _logger.LogInformation("Produce register request.{newline}Topic: {topic}{newline}Request: {registerJson}", 
             Environment.NewLine, 
             _topic, 
+            Environment.NewLine, 
             registerJson);
 
         try
         {
-            await _producer.ProduceAsync(_topic, new Message<Ignore, string>(){ Value = registerJson});
-            _logger.LogDebug("Produce register request completed successfully.");
+            await _producer.ProduceAsync(_topic, new Message<long, string>(){ Key = 0, Value = registerJson }, token);
+            _logger.LogInformation("Produce register request completed successfully.");
         }
         catch (Exception e)
         {
