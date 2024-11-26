@@ -1,10 +1,17 @@
 ﻿using Frontend.Entities.Account.Model;
+using Frontend.Features.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Frontend.Pages.Account.Model;
 
 public class AccountController : Controller
 {
+    private readonly IAccountService _accountService;
+
+    public AccountController(IAccountService accountService)
+    {
+        _accountService = accountService;
+    }
     public IActionResult Login()
     {
         return View();
@@ -22,8 +29,9 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public IActionResult Register(RegisterModel registerModel)
+    public async Task<IActionResult> Register(RegisterModel registerModel)
     {
+        await _accountService.Register(registerModel);
         return RedirectToAction("RegisterSend", "Account", registerModel);
     }
 

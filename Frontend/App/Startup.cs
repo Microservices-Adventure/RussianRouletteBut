@@ -1,9 +1,17 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using Frontend.App.Config;
+using Frontend.Features.Interfaces;
+using Microsoft.Extensions.FileProviders;
 
 namespace Frontend.App;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
     public void ConfigureServices(IServiceCollection services)
     {
         services
@@ -23,6 +31,10 @@ public class Startup
             opt.AllowAnyMethod();
             opt.SetIsOriginAllowed(_ => true);
         }));
+        
+        services.Configure<KafkaSettings>(_configuration.GetSection(nameof(KafkaSettings)));
+
+        services.AddSingleton<IAccountService, IAccountService>();
     }
 
     public void Configure(IApplicationBuilder app, IHostEnvironment env)
