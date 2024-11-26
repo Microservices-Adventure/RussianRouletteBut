@@ -11,9 +11,11 @@ public class Program
         Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((context, config) =>
             {
+                var env = context.HostingEnvironment;
                 config.Sources.Clear();
                 config.SetBasePath(Directory.GetCurrentDirectory());
-                config.AddJsonFile("App/Config/appsettings.json", optional: false, reloadOnChange: true);
+                config.AddJsonFile("App/Config/appsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile($"App/Config/appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {
@@ -22,17 +24,32 @@ public class Program
                 string? certificatePassword = Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Password");
                 if (!string.IsNullOrEmpty(certificatePath) && !string.IsNullOrEmpty(certificatePassword))
                 {
-                    Console.WriteLine("HTTPS certifcicate load successfully");
-                    webBuilder.ConfigureKestrel(serverOptions =>
-                    {
-                        serverOptions.ListenAnyIP(8081, listenOptions =>
-                        {
-                            listenOptions.UseHttps(certificatePath, certificatePassword);
-                        });
-                        serverOptions.ListenAnyIP(8080);
-                    });
+                    Console.WriteLine("HTTPS certificate load successfully");
                 }
-                else Console.WriteLine("HTTPS certifcicate was not loaded");
+                else
+                {
+                    Console.WriteLine("HTTPS certificate was not loaded. Will use our-self certificate.");
+                    
+                    var configuration = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("App/Config/appsettings.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile($"App/Config/appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
+                        .Build();
+                    
+                    certificatePath =
+                        configuration["ASPNETCORE_Kestrel__Certificates__Default__:Path"]!;
+                    certificatePassword =
+                        configuration["ASPNETCORE_Kestrel__Certificates__Default__:Password"]!;
+                }
+                
+                webBuilder.ConfigureKestrel(serverOptions =>
+                {
+                    serverOptions.ListenAnyIP(8081, listenOptions =>
+                    {
+                        listenOptions.UseHttps(certificatePath, certificatePassword);
+                    });
+                    serverOptions.ListenAnyIP(8080);
+                });
 
                 webBuilder.UseStartup<Startup>();
             });
