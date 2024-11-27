@@ -48,6 +48,8 @@ public class Startup
             context.Database.Migrate();
         }
 
+        app.UseExceptionHandler(_ => { });
+
         app.UseHttpsRedirection();
 
         app.UseRouting();

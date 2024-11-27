@@ -32,6 +32,6 @@ public class RegisterBackgroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await _registerConsumer.Consume();
+        await _registerConsumer.Consume(stoppingToken);
     }
 }
