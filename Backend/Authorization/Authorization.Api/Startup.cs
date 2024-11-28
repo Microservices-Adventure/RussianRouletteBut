@@ -25,7 +25,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
-        services.AddConfiguires(_configuration);
+        services.AddConfigs(_configuration);
         services.AddAuthorizationServices(_configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>()!);
 
         var connectionString = _configuration["ConnectionStrings:DefaultConnection"]!;

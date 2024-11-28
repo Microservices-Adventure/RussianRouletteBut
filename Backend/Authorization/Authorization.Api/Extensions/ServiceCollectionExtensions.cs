@@ -62,7 +62,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddConfiguires(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddConfigs(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwaggerGen(option =>
         {
