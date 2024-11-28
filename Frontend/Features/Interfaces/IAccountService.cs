@@ -4,6 +4,6 @@ namespace Frontend.Features.Interfaces;
 
 public interface IAccountService
 {
-    Task Login(LoginModel loginModel);
+    Task<LoginResponse> Login(LoginModel loginModel);
     Task Register(RegisterModel registerModel);
 }

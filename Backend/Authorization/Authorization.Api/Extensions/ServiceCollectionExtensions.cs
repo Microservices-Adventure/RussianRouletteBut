@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Authorization.Api.Middlewares;
 
 namespace Authorization.Api.Extensions;
 
@@ -61,7 +62,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddConfiguires(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddConfigs(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwaggerGen(option =>
         {
@@ -100,6 +101,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddExceptionHandler<AppExceptionHandler>();
         services.AddValidatorsFromAssemblyContaining<RegisterUserModelValidator>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAccountService, AccountService>();

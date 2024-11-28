@@ -36,38 +36,56 @@ public class RegisterConsumer : IDisposable
         _accountService = accountService;
     }
 
-    public async Task Consume()
+    public async Task Consume(CancellationToken stoppingToken)
     {
-        ConsumeResult<Ignore, string> result = _consumer.Consume();
-        _logger.LogInformation("Register request: {result}", result.Message.Value);
-
-        try
+        await Task.Yield();
+        
+        while (_consumer.Consume(stoppingToken) is { } result)
         {
-            RegisterUserModel? userModel = JsonSerializer.Deserialize<RegisterUserModel>(result.Message.Value);
-
-            if (userModel == null)
+            _logger.LogInformation("Register request: {result}", result.Message.Value);
+            try
             {
-                throw new InvalidRegisterException("RegisterUserModel is null");
+                var registerResult = await TryRegister(result);
+                
+                if (registerResult)
+                {
+                    _logger.LogInformation("Register request successfully processed!");
+                }
+                else
+                {
+                    _logger.LogInformation("Register request failed!");
+                }
+            }
+            catch (JsonException e)
+            {
+                _logger.LogError("Register request throw exception: {message}!", e.Message);
+            }
+            catch (InvalidRegisterException e)
+            {
+                _logger.LogError("Register request throw exception: {message}!", e.Message);
+            }
+            catch (ValidationException e)
+            {
+                _logger.LogWarning("{exception}", e.Message);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Register request throw unhandled exception.");
             }
 
-            await _accountService.RegisterUser(userModel);
-            _logger.LogInformation("Register request successfully processed!");
+            _consumer.Commit(result);
         }
-        catch (JsonException e)
-        {
-            _logger.LogError("Register request throw exception: {message}", e.Message);
-        }
-        catch (InvalidRegisterException e)
-        {
-            _logger.LogError("Register request throw exception: {message}", e.Message);
-        }
-        catch (ValidationException e)
-        {
-            _logger.LogWarning("{exception}", e.Message);
-        }
-
-        _consumer.Commit(result);
     }
+    
+    private async Task<bool> TryRegister(ConsumeResult<Ignore,string> result)
+    {
+        RegisterUserModel? userModel = JsonSerializer.Deserialize<RegisterUserModel>(result.Message.Value);
+        if (userModel == null)
+        {
+            throw new InvalidRegisterException("RegisterUserModel is null");
+        }
+        return await _accountService.RegisterUser(userModel);
+    } 
 
     public void Dispose()
     {

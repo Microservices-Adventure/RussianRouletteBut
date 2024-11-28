@@ -1,4 +1,6 @@
 using Frontend.App.Config;
+using Frontend.App.Extensions;
+using Frontend.App.Middlewares;
 using Frontend.Features;
 using Frontend.Features.Interfaces;
 
@@ -34,8 +36,11 @@ public class Startup
         }));
         
         services.Configure<KafkaSettings>(_configuration.GetSection(nameof(KafkaSettings)));
-
+        services.AddExceptionHandler<AppExceptionHandler>();
         services.AddSingleton<IAccountService, AccountService>();
+        services.AddHttpClient();
+
+        services.AddApplicationAuthorization(_configuration);
     }
 
     public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -50,6 +55,7 @@ public class Startup
             app.UseHsts();
         }
 
+        app.UseExceptionHandler(_ => { });
         app.UseCors("default");
 
         app.UseHttpsRedirection();
@@ -57,6 +63,7 @@ public class Startup
 
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>

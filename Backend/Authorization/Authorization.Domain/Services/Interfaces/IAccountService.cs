@@ -3,11 +3,6 @@
 namespace Authorization.Domain.Services.Interfaces;
 public interface IAccountService
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="user"></param>
-    /// <exception cref="FluentValidation.ValidationException"></exception>
-    /// <returns></returns>
+    Task<LoginUserResult> Login(LoginUserModel loginUserModel);
     Task<bool> RegisterUser(RegisterUserModel user);
 }

@@ -1,7 +1,3 @@
-networks:
-  app-network:
-    driver: bridge
-
 services:
   client:
     container_name: frontend
@@ -16,5 +12,3 @@ services:
       - ASPNETCORE_URLS=https://+:8081;http://+:8080
       - ASPNETCORE_Kestrel__Certificates__Default__Password=my_password_is_very_puriramchick
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificates/aspnetapp.pfx
-    networks:
-      - app-network
