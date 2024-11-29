@@ -19,6 +19,8 @@ public class RegisterProducer : IDisposable
         _logger = producerLogger;
         var builder = new ProducerBuilder<long, string>(new ProducerConfig{
                 BootstrapServers = bootstrapServers,
+                BatchSize = 50000,
+                LingerMs = 5
             });
 
         _producer = builder.Build();
