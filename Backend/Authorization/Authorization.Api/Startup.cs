@@ -28,7 +28,7 @@ public class Startup
         services.AddConfigs(_configuration);
         services.AddAuthorizationServices(_configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>()!);
 
-        var connectionString = _configuration["ConnectionStrings:DefaultConnection"]!;
+        var connectionString = Environment.GetEnvironmentVariable("ASPNETCORE_Postgres_Connection") ?? _configuration["ConnectionStrings:DefaultConnection"]!;
         services.AddDbServices(connectionString);
         services.AddApplicationServices();
     }
@@ -50,7 +50,7 @@ public class Startup
 
         app.UseExceptionHandler(_ => { });
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
 
         app.UseRouting();
 
