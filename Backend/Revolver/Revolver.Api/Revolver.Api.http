@@ -1,0 +1,6 @@
+@Revolver.Api_HostAddress = http://localhost:8084
+
+GET {{Revolver.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

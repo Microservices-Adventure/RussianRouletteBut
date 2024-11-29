@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.Domain", "Bac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.Infrastructure", "Backend\Authorization\Authorization.Infrastructure\Authorization.Infrastructure.csproj", "{00041EE5-A67D-4389-A243-73188EF67B5D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revolver", "Revolver", "{CB4B8118-1CDF-4BED-A2B8-01229C00A23C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revolver.Api", "Backend\Revolver\Revolver.Api\Revolver.Api.csproj", "{0839C889-0D3F-4004-953C-3F8488EAE256}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{00041EE5-A67D-4389-A243-73188EF67B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00041EE5-A67D-4389-A243-73188EF67B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00041EE5-A67D-4389-A243-73188EF67B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0839C889-0D3F-4004-953C-3F8488EAE256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0839C889-0D3F-4004-953C-3F8488EAE256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0839C889-0D3F-4004-953C-3F8488EAE256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0839C889-0D3F-4004-953C-3F8488EAE256}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,8 @@ Global
 		{EF8B15EC-01CE-4AA2-8994-4797150DC576} = {CBB7805E-B2C5-4FB0-8DB9-93B4E80A264A}
 		{5AE9B787-91CC-4B83-BF03-15112880D8FF} = {CBB7805E-B2C5-4FB0-8DB9-93B4E80A264A}
 		{00041EE5-A67D-4389-A243-73188EF67B5D} = {CBB7805E-B2C5-4FB0-8DB9-93B4E80A264A}
+		{CB4B8118-1CDF-4BED-A2B8-01229C00A23C} = {0E4BCF84-ED15-4B0F-8648-3CB02D172EF4}
+		{0839C889-0D3F-4004-953C-3F8488EAE256} = {CB4B8118-1CDF-4BED-A2B8-01229C00A23C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2EAD3B1-5A1B-4D39-B4B1-CA5E9BBB15CF}
