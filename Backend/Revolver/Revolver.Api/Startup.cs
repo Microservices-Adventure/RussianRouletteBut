@@ -1,3 +1,5 @@
+using Revolver.Api.Extensions;
+
 namespace Revolver.Api;
 
 public class Startup
@@ -11,9 +13,7 @@ public class Startup
     
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddControllers();
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddBaseServices();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
