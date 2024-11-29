@@ -14,6 +14,7 @@ public class HearthController : ControllerBase
         _lifetime = lifetime;
     }
     
+    [HttpPost("kill")]
     public IActionResult Kill()
     {
         Thread kill = new Thread(() =>
@@ -24,6 +25,7 @@ public class HearthController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("isLive")]
     public IActionResult IsLive()
     {
         return Ok(Live);
