@@ -16,6 +16,11 @@ public class AppExceptionHandler : IExceptionHandler
         {
             httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
         }
+
+        if (exception is OperationCanceledException)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+        }
         
         await httpContext.Response.WriteAsJsonAsync(exception, cancellationToken);
         
