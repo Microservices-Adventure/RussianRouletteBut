@@ -20,7 +20,6 @@ services:
     depends_on:
       - kafka
       - authorization-db
-    restart: always
     build:
       context: .
       dockerfile: ./Backend/Authorization/Authorization.Api/Dockerfile
@@ -47,6 +46,7 @@ services:
     
   kafka:
     image: wurstmeister/kafka:latest
+    restart: always
     depends_on:
       - zookeeper
     environment:
