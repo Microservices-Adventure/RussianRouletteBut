@@ -38,14 +38,18 @@ public class RegisterConsumer : IDisposable
 
     public async Task Consume(CancellationToken stoppingToken)
     {
+        if (stoppingToken.IsCancellationRequested)
+        {
+            return;
+        }
         await Task.Yield();
         
-        while (_consumer.Consume(stoppingToken) is { } result)
+        while (stoppingToken.IsCancellationRequested == false && _consumer.Consume(stoppingToken) is { } result)
         {
             _logger.LogInformation("Register request: {result}", result.Message.Value);
             try
             {
-                var registerResult = await TryRegister(result);
+                var registerResult = await TryRegister(result, stoppingToken);
                 
                 if (registerResult)
                 {
@@ -77,14 +81,14 @@ public class RegisterConsumer : IDisposable
         }
     }
     
-    private async Task<bool> TryRegister(ConsumeResult<Ignore,string> result)
+    private async Task<bool> TryRegister(ConsumeResult<Ignore,string> result, CancellationToken ct)
     {
         RegisterUserModel? userModel = JsonSerializer.Deserialize<RegisterUserModel>(result.Message.Value);
         if (userModel == null)
         {
             throw new InvalidRegisterException("RegisterUserModel is null");
         }
-        return await _accountService.RegisterUser(userModel);
+        return await _accountService.RegisterUser(userModel, ct);
     } 
 
     public void Dispose()

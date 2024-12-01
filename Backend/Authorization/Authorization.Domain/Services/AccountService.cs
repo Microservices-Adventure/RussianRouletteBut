@@ -30,11 +30,11 @@ public class AccountService : IAccountService
         _loginUserModelValidator = loginUserModelValidator;
     }
 
-    public async Task<LoginUserResult> Login(LoginUserModel loginUserModel)
+    public async Task<LoginUserResult> Login(LoginUserModel loginUserModel, CancellationToken ct)
     {
-        await _loginUserModelValidator.ValidateAndThrowAsync(loginUserModel);
+        await _loginUserModelValidator.ValidateAndThrowAsync(loginUserModel, ct);
         
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginUserModel.Username);
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginUserModel.Username, ct);
 
         if (user == null)
         {
@@ -52,16 +52,17 @@ public class AccountService : IAccountService
         return new LoginUserResult(user.UserName!, user.Email!, token);
     }
 
-    public async Task<bool> RegisterUser(RegisterUserModel userModel)
+    public async Task<bool> RegisterUser(RegisterUserModel userModel, CancellationToken ct)
     {
-        await _registerUserModelValidator.ValidateAndThrowAsync(userModel);
+        await _registerUserModelValidator.ValidateAndThrowAsync(userModel, ct);
 
         User user = new User
         {
             UserName = userModel.Username,
             Email = userModel.Email
         };
-
+        
+        ct.ThrowIfCancellationRequested();
         var createdUser = await _userManager.CreateAsync(user, userModel.Password);
 
         if (createdUser.Succeeded)

@@ -3,6 +3,6 @@
 namespace Authorization.Domain.Services.Interfaces;
 public interface IAccountService
 {
-    Task<LoginUserResult> Login(LoginUserModel loginUserModel);
-    Task<bool> RegisterUser(RegisterUserModel user);
+    Task<LoginUserResult> Login(LoginUserModel loginUserModel, CancellationToken token);
+    Task<bool> RegisterUser(RegisterUserModel user, CancellationToken token);
 }
