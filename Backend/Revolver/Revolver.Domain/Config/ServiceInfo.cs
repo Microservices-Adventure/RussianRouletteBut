@@ -1,6 +1,6 @@
-namespace Revolver.Api.Config;
+namespace Revolver.Domain.Config;
 
-internal sealed class ServiceInfo
+public sealed class ServiceInfo
 {
     public string ServiceName { get; set; } = null!;
     public string ServiceNameRus { get; set; } = null!;

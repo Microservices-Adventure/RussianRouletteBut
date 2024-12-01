@@ -1,4 +1,4 @@
-using Revolver.Api.Config;
+using Revolver.Domain.Config;
 
 namespace Revolver.Api.Extensions;
 

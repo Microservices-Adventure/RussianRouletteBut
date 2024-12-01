@@ -1,4 +1,7 @@
 using Revolver.Api.Extensions;
+using Revolver.Domain.Config;
+using Revolver.Domain.Services;
+using Revolver.Domain.Services.Interfaces;
 
 namespace Revolver.Api;
 
@@ -14,6 +17,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddBaseServices();
+        services.AddScoped<IRevolverService, RevolverService>();
+        services.Configure<ServicesParameters>(_configuration.GetSection(nameof(ServicesParameters)));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -23,6 +28,8 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseRouting();
         
         app.UseAuthorization();
         

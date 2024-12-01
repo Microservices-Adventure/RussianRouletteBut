@@ -38,9 +38,13 @@ public class RegisterConsumer : IDisposable
 
     public async Task Consume(CancellationToken stoppingToken)
     {
+        if (stoppingToken.IsCancellationRequested)
+        {
+            return;
+        }
         await Task.Yield();
         
-        while (_consumer.Consume(stoppingToken) is { } result)
+        while (stoppingToken.IsCancellationRequested == false && _consumer.Consume(stoppingToken) is { } result)
         {
             _logger.LogInformation("Register request: {result}", result.Message.Value);
             try

@@ -22,6 +22,7 @@ public class HearthController : ControllerBase
             Thread.Sleep(500);
             _lifetime.StopApplication();
         });
+        kill.Start();
         return Ok();
     }
 

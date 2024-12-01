@@ -1,6 +1,6 @@
-namespace Revolver.Api.Config;
+namespace Revolver.Domain.Config;
 
-internal sealed class ServicesParameters
+public sealed class ServicesParameters
 {
     public List<ServiceInfo> Services { get; set; } = [];
 }
