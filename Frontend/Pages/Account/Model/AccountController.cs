@@ -18,9 +18,17 @@ public class AccountController : Controller
         _accountService = accountService;
         _logger = logger;
     }
+    
     public IActionResult Login()
     {
         return View();
+    }
+    
+    public async Task<IActionResult> Logout()
+    {
+        HttpContext.Response.Cookies.Delete("accessToken");
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Home");
     }
 
     public IActionResult Register()

@@ -4,4 +4,47 @@
 @{
 
 }
-hi, this is revolver
+<div class="text-center">
+    <button id="RevolverButton" onclick="shoot()">
+        <image id="Revolver" src="lib/revolver/revolverV1.png" alt="revolver" width="900px"/>
+    </button><br/>
+    <label id="Result"></label>
+</div>
+
+<script>
+    async function shoot(){
+        const labelResult = document.getElementById("Result");
+        labelResult.innerHTML = "Летит шальная...";
+        
+        const revolverButton = document.getElementById("RevolverButton");
+        revolverButton.setAttribute("disabled", null);
+        const revolver = document.getElementById("Revolver");
+        revolver.setAttribute("src", 'lib/revolver/revolverV1.gif');
+        
+        let result;
+        const duration = 2700;
+        setTimeout(() => {
+            if (result) {
+                labelResult.innerHTML = "Какой-то сервис упал";
+            }
+            else {
+                labelResult.innerHTML = "Штош, какой-то сервис выжил";
+            }
+            revolver.setAttribute("src", 'lib/revolver/revolverV1.png');
+            revolverButton.removeAttribute("disabled");
+        }, duration)
+        
+        result = await apiShoot();
+    }
+
+    async function apiShoot(){
+        const response = await fetch("Revolver/Shoot", {
+            method: "POST",
+            headers: {"Accept": "application/json"},
+            body: JSON.stringify(null)
+        });
+        console.log(response.status);
+        console.log(response);
+        return response.ok;
+    }
+</script>

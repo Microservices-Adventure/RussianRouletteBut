@@ -14,6 +14,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificates/aspnetapp.pfx
       - ASPNETCORE_AuthorizationService=authorization
       - ASPNETCORE_Kafka_Bootstrap_Servers=kafka:9092
+      - REVOLVER_HOST=revolver
   
   auth-service:
     container_name: authorization

@@ -29,8 +29,8 @@ public class Startup
         
         services.Configure<KafkaSettings>(_configuration.GetSection(nameof(KafkaSettings)));
         services.AddExceptionHandler<AppExceptionHandler>();
-        services.AddSingleton<IAccountService, AccountService>();
-        services.AddHttpClient();
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IRevolverService, RevolverService>();
 
         services.AddApplicationAuthorization(_configuration);
     }
