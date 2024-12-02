@@ -23,7 +23,7 @@ public class GunController : ControllerBase
         _lifetime = lifetime;
     }
     
-    [HttpPost]
+    [HttpPost("shoot")]
     public IActionResult Shoot(ShootRequestModel request)
     {
         List<ServiceInfo> services = [];

@@ -17,7 +17,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddBaseServices();
-        services.AddScoped<IRevolverService, RevolverService>();
+        services.AddSingleton<IRevolverService, RevolverService>();
         services.Configure<ServicesParameters>(_configuration.GetSection(nameof(ServicesParameters)));
     }
 
