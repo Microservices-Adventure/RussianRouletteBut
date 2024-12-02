@@ -10,7 +10,21 @@ internal static class ServiceCollectionExtensions
         services
             .AddAuthorization()
             .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options => options.LoginPath = "/Account/Login");
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    if (string.Equals(context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase))
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    }
+
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.CompletedTask;
+                };
+            });
 
         return services;
     }

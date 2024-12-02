@@ -13,6 +13,8 @@
     <Content Remove="App\Lib\**" />
     <EmbeddedResource Remove="App\Lib\**" />
     <None Remove="App\Lib\**" />
+    <None Include="wwwroot\lib\revolver\revolverV1.gif" />
+    <None Include="wwwroot\lib\revolver\revolverV1.png" />
   </ItemGroup>
 
   <ItemGroup>

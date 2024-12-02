@@ -46,3 +46,8 @@ body {
 .app-text-red {
     color: #F44019 !important;
 }
+
+#RevolverButton{
+    background: rgba(0,0,0,0);
+    border: transparent solid 0;
+}
