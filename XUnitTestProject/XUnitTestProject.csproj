@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Backend\Authorization\Authorization.Api\Authorization.Api.csproj" />
     <ProjectReference Include="..\Backend\Authorization\Authorization.Domain\Authorization.Domain.csproj" />
     <ProjectReference Include="..\Backend\Revolver\Revolver.Api\Revolver.Api.csproj" />
     <ProjectReference Include="..\Backend\Revolver\Revolver.Domain\Revolver.Domain.csproj" />
