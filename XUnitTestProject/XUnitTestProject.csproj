@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Backend\Authorization\Authorization.Domain\Authorization.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
