@@ -11,6 +11,7 @@ namespace Frontend.Features;
 internal sealed class AccountService : IAccountService
 {
     private readonly RegisterProducer _registerProducer;
+    private readonly string _authorizationHost;
 
     public AccountService(
         ILogger<RegisterProducer> registerProducerLogger,
@@ -20,17 +21,19 @@ internal sealed class AccountService : IAccountService
             kafkaSettings.Value.BootstrapServers,
             kafkaSettings.Value.RegistrationTopic,
             registerProducerLogger);
+        
+        _authorizationHost = Environment.GetEnvironmentVariable("ASPNETCORE_AuthorizationService") ?? "localhost";
     }
     
     public async Task<LoginResponse> Login(LoginModel loginModel)
     {
         JsonContent jsonContent = JsonContent.Create(loginModel);
         var httpClientHandler = new HttpClientHandler();
-        httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => { return true; };
+        httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
         
         using var httpClient = new HttpClient(httpClientHandler);
         
-        using HttpResponseMessage responseMessage = await httpClient.PostAsync("https://localhost:8083/api/account/login", jsonContent);
+        using HttpResponseMessage responseMessage = await httpClient.PostAsync("http://" + _authorizationHost + ":8082/api/account/login", jsonContent);
 
         if (responseMessage.IsSuccessStatusCode)
         { 

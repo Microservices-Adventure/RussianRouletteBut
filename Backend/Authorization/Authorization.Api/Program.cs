@@ -1,9 +1,14 @@
+using Authorization.Api.Config;
+using Authorization.Domain.Config;
+
 namespace Authorization.Api;
 
 public class Program
 {
     public static void Main(string[] args)
     {
+        Console.WriteLine($"Wait {HealthSettings.CrashTime} seconds. Loading.");
+        Thread.Sleep(TimeSpan.FromSeconds(HealthSettings.CrashTime));
         CreateHostBuilder(args).Build().Run();
     }
 
@@ -18,23 +23,8 @@ public class Program
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {
-                var configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
-                    .Build();
-                    
-                string certificatePath =
-                    configuration["ASPNETCORE_Kestrel__Certificates__Default__:Path"]!;
-                string certificatePassword =
-                    configuration["ASPNETCORE_Kestrel__Certificates__Default__:Password"]!;
-                
                 webBuilder.ConfigureKestrel(serverOptions =>
                 {
-                    serverOptions.ListenAnyIP(8083, listenOptions =>
-                    {
-                        listenOptions.UseHttps(certificatePath, certificatePassword);
-                    });
                     serverOptions.ListenAnyIP(8082);
                 });
                 

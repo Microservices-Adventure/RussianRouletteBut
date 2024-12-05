@@ -106,6 +106,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddHostedService<RegisterBackgroundService>();
+        services.AddScoped<IHealthService, HealthService>();
 
         return services;
     }

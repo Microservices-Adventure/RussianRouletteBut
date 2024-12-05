@@ -26,19 +26,11 @@ public class Startup
                     options.ViewLocationFormats.Add("/Pages/{1}/Ui/{0}.cshtml");
                     options.ViewLocationFormats.Add("/Pages/Shared/{0}.cshtml");
                 });
-
-        services.AddCors(policy => policy.AddPolicy("default", opt =>
-        {
-            opt.AllowAnyHeader();
-            opt.AllowCredentials();
-            opt.AllowAnyMethod();
-            opt.SetIsOriginAllowed(_ => true);
-        }));
         
         services.Configure<KafkaSettings>(_configuration.GetSection(nameof(KafkaSettings)));
         services.AddExceptionHandler<AppExceptionHandler>();
-        services.AddSingleton<IAccountService, AccountService>();
-        services.AddHttpClient();
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IRevolverService, RevolverService>();
 
         services.AddApplicationAuthorization(_configuration);
     }
@@ -56,7 +48,6 @@ public class Startup
         }
 
         app.UseExceptionHandler(_ => { });
-        app.UseCors("default");
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();

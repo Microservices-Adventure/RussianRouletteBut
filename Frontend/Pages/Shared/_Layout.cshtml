@@ -19,12 +19,24 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
+                    @if (!User.Identity?.IsAuthenticated ?? true)
+                    {
                         <li class="nav-item">
-                            <a class="nav-link app-text-yellow" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
+                            <a class="nav-link app-text-yellow" asp-controller="Account" asp-action="Login">Войти</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link app-text-orange" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
+                            <a class="nav-link app-text-orange" asp-controller="Account" asp-action="Register">Регистрация</a>
                         </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <label class="nav-link app-text-yellow">@User.Identity.Name</label>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link app-text-yellow" asp-controller="Account" asp-action="Logout">Выйти</a>
+                        </li>
+                    }
                     </ul>
                 </div>
             </div>
