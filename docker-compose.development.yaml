@@ -10,6 +10,18 @@ services:
       - 15432:5432
     volumes:
       - auth-users-dbdata:/var/lib/postgresql/auth-users/data
+
+  actionlog-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_DB=action-log-db"
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    ports:
+      - 15433:5432
+    volumes:
+      - action-log-dbdata:/var/lib/postgresql/action-log/data
       
   kafka:
     image: wurstmeister/kafka:latest
@@ -42,6 +54,7 @@ services:
 
 volumes:
     auth-users-dbdata:
+    action-log-dbdata:
     kafkadata:
     zkdata:
     zkdatalog:
