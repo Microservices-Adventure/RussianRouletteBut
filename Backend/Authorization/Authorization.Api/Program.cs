@@ -1,9 +1,14 @@
+using Authorization.Api.Config;
+using Authorization.Domain.Config;
+
 namespace Authorization.Api;
 
 public class Program
 {
     public static void Main(string[] args)
     {
+        Console.WriteLine($"Wait {HealthSettings.CrashTime} seconds. Loading.");
+        Thread.Sleep(TimeSpan.FromSeconds(HealthSettings.CrashTime));
         CreateHostBuilder(args).Build().Run();
     }
 

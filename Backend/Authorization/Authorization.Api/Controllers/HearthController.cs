@@ -1,3 +1,5 @@
+using Authorization.Domain.Models;
+using Authorization.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authorization.Api.Controllers;
@@ -7,16 +9,22 @@ namespace Authorization.Api.Controllers;
 public class HearthController : ControllerBase
 {
     private readonly IHostApplicationLifetime _lifetime;
-    private const bool Live = true;
+    private readonly IHealthService _healthService;
     
-    public HearthController(IHostApplicationLifetime lifetime)
+    public HearthController(IHostApplicationLifetime lifetime, IHealthService healthService)
     {
         _lifetime = lifetime;
+        _healthService = healthService;
     }
     
     [HttpPost("kill")]
     public IActionResult Kill()
     {
+        double cooldownTime = _healthService.CooldownTime();
+        if (cooldownTime > 0)
+        {
+            return BadRequest("Cooldown time left: " + cooldownTime);
+        }
         Thread kill = new Thread(() =>
         {
             Thread.Sleep(500);
@@ -29,6 +37,18 @@ public class HearthController : ControllerBase
     [HttpGet("isLive")]
     public IActionResult IsLive()
     {
-        return Ok(Live);
+        return Ok(_healthService.IsLive());
+    }
+
+    [HttpGet("killAvailable")]
+    public IActionResult KillAvailable()
+    {
+        double timeLeft = _healthService.CooldownTime();
+        var response = new CooldownModel
+        {
+            IsCooldown = timeLeft > 0,
+            SecondsLeft = timeLeft
+        };
+        return Ok(response);
     }
 }
