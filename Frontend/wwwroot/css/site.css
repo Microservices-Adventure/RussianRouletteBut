@@ -3,7 +3,7 @@
 .jetbrains-mono-300 {
     font-family: "JetBrains Mono", Arial, Helvetica, sans-serif;
     font-optical-sizing: auto;
-    font-weight: 300;
+    font-weight: 500;
     font-style: normal;
 }
 
@@ -29,10 +29,6 @@ html {
 
 body {
   margin-bottom: 60px;
-}
-
-.app-bg-black {
-    background: #101015;
 }
 
 .app-text-yellow {
