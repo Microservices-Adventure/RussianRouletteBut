@@ -43,11 +43,11 @@ public class GunController : ControllerBase
         if (serviceInfo.ServiceName == "Revolver")
         {
             KillRevolver();
-            return Ok();
+            return Ok(serviceInfo);
         }
 
         _revolverService.Kill(serviceInfo);
-        return Ok();
+        return Ok(serviceInfo);
     }
 
     private void KillRevolver()

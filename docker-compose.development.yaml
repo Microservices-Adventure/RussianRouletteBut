@@ -25,6 +25,7 @@ services:
       
   kafka:
     image: wurstmeister/kafka:latest
+    restart: always
     depends_on:
       - zookeeper
     environment:
