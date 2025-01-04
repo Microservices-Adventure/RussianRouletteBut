@@ -91,28 +91,39 @@ namespace ActionLog.Api.Controllers
 
         // POST: /api/logs/add
         [HttpPost("add")]
-        public async Task<IActionResult> AddLog([FromBody] ALog log)
+ public async Task<IActionResult> AddLog([FromBody] AddLogRequest request)
         {
-            if (log == null)
+            if (request == null)
             {
                 return BadRequest("Log data is null.");
             }
 
             // Проверка обязательных полей
-            if (string.IsNullOrWhiteSpace(log.MicroserviceName) ||
-                string.IsNullOrWhiteSpace(log.Description) ||
-                string.IsNullOrWhiteSpace(log.Status))
+            if (string.IsNullOrWhiteSpace(request.MicroserviceName) ||
+                string.IsNullOrWhiteSpace(request.Description) ||
+                string.IsNullOrWhiteSpace(request.Status))
             {
                 return BadRequest("MicroserviceName, Description, and Status are required fields.");
             }
 
-            // Исключение Id из входного объекта (на всякий случай)
-            log.Id = 0;
+            // Создание сущности ALog из запроса
+            var log = new ALog
+            {
+                Username = request.Username,
+                Email = request.Email,
+                MicroserviceId = request.MicroserviceId,
+                MicroserviceName = request.MicroserviceName,
+                Description = request.Description,
+                Status = request.Status,
+                Error = request.Error,
+                Moment = request.Moment == default ? DateTimeOffset.UtcNow : request.Moment // Установка временной метки, если она не передана
+            };
 
-            // Добавление записи
+            // Добавление записи в базу данных
             _context.ActionLogs.Add(log);
             await _context.SaveChangesAsync();
 
+            // Возврат результата с кодом 201 (Created) и ссылкой на созданный ресурс
             return CreatedAtAction(nameof(GetLogs), new { id = log.Id }, log);
         }
     }
