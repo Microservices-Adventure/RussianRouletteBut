@@ -1,6 +1,8 @@
 
 using ActionLog.Api.DataAccess;
+using ActionLog.Api.Services;
 using Microsoft.EntityFrameworkCore;
+using static ActionLog.Api.Services.LogServices;
 
 namespace ActionLog.Api
 {
@@ -21,6 +23,8 @@ namespace ActionLog.Api
             {
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddScoped<ILogService, LogService>();
 
 
             var app = builder.Build();
