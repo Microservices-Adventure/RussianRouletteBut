@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "Frontend\Fronte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProject", "XUnitTestProject\XUnitTestProject.csproj", "{E9D98D7E-8CAA-46CB-A83A-6DF06C02BFAD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{36FA824B-7DE1-497D-A887-1166573681FD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Р­Р»РµРјРµРЅС‚С‹ СЂРµС€РµРЅРёСЏ", "Р­Р»РµРјРµРЅС‚С‹ СЂРµС€РµРЅРёСЏ", "{36FA824B-7DE1-497D-A887-1166573681FD}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.development.yaml = docker-compose.development.yaml
 		docker-compose.yml = docker-compose.yml
@@ -25,13 +25,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.Infrastructur
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActionLog", "ActionLog", "{366528E4-10C4-4CE2-A0B6-3B3963F0E128}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionLog.Api", "Backend\ActionLog\ActionLog.Api\ActionLog.Api.csproj", "{A171AD31-7CD7-4750-A73A-2A40E09E5258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionLog.Api", "Backend\ActionLog\ActionLog.Api\ActionLog.Api.csproj", "{A171AD31-7CD7-4750-A73A-2A40E09E5258}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revolver", "Revolver", "{CB4B8118-1CDF-4BED-A2B8-01229C00A23C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revolver.Api", "Backend\Revolver\Revolver.Api\Revolver.Api.csproj", "{0839C889-0D3F-4004-953C-3F8488EAE256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Revolver.Api", "Backend\Revolver\Revolver.Api\Revolver.Api.csproj", "{0839C889-0D3F-4004-953C-3F8488EAE256}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revolver.Domain", "Backend\Revolver\Revolver.Domain\Revolver.Domain.csproj", "{34F85660-A43D-4871-AF17-ECE91B28AD35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Revolver.Domain", "Backend\Revolver\Revolver.Domain\Revolver.Domain.csproj", "{34F85660-A43D-4871-AF17-ECE91B28AD35}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Profile", "Profile", "{4ADD1A65-C138-4CA1-8D6D-9B70259DD745}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profile.Api", "Backend\Profile\Profile.Api\Profile.Api.csproj", "{07637AD5-D2BF-47FE-950E-BBEF08852732}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +75,10 @@ Global
 		{34F85660-A43D-4871-AF17-ECE91B28AD35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34F85660-A43D-4871-AF17-ECE91B28AD35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34F85660-A43D-4871-AF17-ECE91B28AD35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07637AD5-D2BF-47FE-950E-BBEF08852732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07637AD5-D2BF-47FE-950E-BBEF08852732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07637AD5-D2BF-47FE-950E-BBEF08852732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07637AD5-D2BF-47FE-950E-BBEF08852732}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +93,8 @@ Global
 		{CB4B8118-1CDF-4BED-A2B8-01229C00A23C} = {0E4BCF84-ED15-4B0F-8648-3CB02D172EF4}
 		{0839C889-0D3F-4004-953C-3F8488EAE256} = {CB4B8118-1CDF-4BED-A2B8-01229C00A23C}
 		{34F85660-A43D-4871-AF17-ECE91B28AD35} = {CB4B8118-1CDF-4BED-A2B8-01229C00A23C}
+		{4ADD1A65-C138-4CA1-8D6D-9B70259DD745} = {0E4BCF84-ED15-4B0F-8648-3CB02D172EF4}
+		{07637AD5-D2BF-47FE-950E-BBEF08852732} = {4ADD1A65-C138-4CA1-8D6D-9B70259DD745}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2EAD3B1-5A1B-4D39-B4B1-CA5E9BBB15CF}

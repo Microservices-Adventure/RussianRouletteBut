@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using Profile.Api.DataAccess;
+
 namespace Profile.Api
 {
     public class Program
