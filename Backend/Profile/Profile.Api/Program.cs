@@ -6,6 +6,7 @@ namespace Profile.Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            IConfiguration configuration = builder.Configuration;
 
             // Add services to the container.
 
@@ -13,8 +14,22 @@ namespace Profile.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            //builder.Services.AddScoped<ILogService, LogService>();
+
 
             var app = builder.Build();
+
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                context.Database.Migrate();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
