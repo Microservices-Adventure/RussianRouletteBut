@@ -1,35 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ActionLog.Api.DataAccess;
-using ActionLog.Api.Models;
-using ActionLog.Api.Services;
+using Profile.Api.Models;
+using Profile.Api.Services;
 
-namespace ActionLog.Api.Controllers
+namespace Profile.Api.Controllers
 {
     [ApiController]
-    [Route("api/logs")]
-    public class LogsController : ControllerBase
+    [Route("api/dropinfo")]
+    public class DropInfoController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly ILogService _logService;
+        private readonly IDropInfoService _dropInfoService;
 
-        public LogsController(AppDbContext context, ILogService logService)
+        public DropInfoController(IDropInfoService dropInfoService)
         {
-            _context = context;
-            _logService = logService;
+            _dropInfoService = dropInfoService;
         }
 
-        // GET: /api/logs/getlist
+        // GET: /api/dropinfo/getlist
         [HttpGet("getlist")]
-        public async Task<IActionResult> GetLogs([FromQuery] GetLogsRequest request)
+        public async Task<IActionResult> GetDropInfos([FromQuery] GetDropInfoRequest request)
         {
             try
             {
-                var (totalRecords, logs) = await _logService.GetLogsAsync(request);
+                var (totalRecords, dropInfos) = await _dropInfoService.GetDropInfosAsync(request);
 
                 return Ok(new
                 {
                     TotalRecords = totalRecords,
-                    Logs = logs
+                    DropInfos = dropInfos
                 });
             }
             catch (ArgumentException ex)
@@ -42,22 +39,22 @@ namespace ActionLog.Api.Controllers
             }
         }
 
-        // POST: /api/logs/add
+        // POST: /api/dropinfo/add
         [HttpPost("add")]
-        public async Task<IActionResult> AddLog([FromBody] AddLogRequest request)
+        public async Task<IActionResult> AddDropInfo([FromBody] AddDropInfoRequest request)
         {
             try
             {
                 if (request == null)
                 {
-                    return BadRequest("Log data is null.");
+                    return BadRequest("DropInfo data is null.");
                 }
 
-                // Добавление лога через сервис
-                var log = await _logService.AddLogAsync(request);
+                // Добавление DropInfo через сервис
+                var dropInfo = await _dropInfoService.AddDropInfoAsync(request);
 
                 // Возврат результата с кодом 201 (Created) и ссылкой на созданный ресурс
-                return CreatedAtAction(nameof(GetLogs), new { id = log.Id }, log);
+                return CreatedAtAction(nameof(GetDropInfos), new { id = dropInfo.Id }, dropInfo);
             }
             catch (ArgumentException ex)
             {

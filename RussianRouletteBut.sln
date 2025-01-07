@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Revolver.Domain", "Backend\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Profile", "Profile", "{4ADD1A65-C138-4CA1-8D6D-9B70259DD745}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profile.Api", "Backend\Profile\Profile.Api\Profile.Api.csproj", "{07637AD5-D2BF-47FE-950E-BBEF08852732}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profile.Api", "Backend\Profile\Profile.Api\Profile.Api.csproj", "{07637AD5-D2BF-47FE-950E-BBEF08852732}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

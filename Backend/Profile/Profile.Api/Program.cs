@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Profile.Api.DataAccess;
+using Profile.Api.Services;
 
 namespace Profile.Api
 {
@@ -22,7 +23,7 @@ namespace Profile.Api
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
 
-            //builder.Services.AddScoped<ILogService, LogService>();
+            builder.Services.AddScoped<IDropInfoService, DropInfoService>();
 
 
             var app = builder.Build();
