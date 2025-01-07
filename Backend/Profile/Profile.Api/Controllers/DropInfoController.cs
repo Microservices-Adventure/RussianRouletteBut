@@ -5,29 +5,32 @@ using Profile.Api.Services;
 namespace Profile.Api.Controllers
 {
     [ApiController]
-    [Route("api/dropinfo")]
-    public class DropInfoController : ControllerBase
+    [Route("api/profile")]
+    public class ProfileController : ControllerBase
     {
         private readonly IDropInfoService _dropInfoService;
 
-        public DropInfoController(IDropInfoService dropInfoService)
+        public ProfileController(IDropInfoService dropInfoService)
         {
             _dropInfoService = dropInfoService;
         }
 
-        // GET: /api/dropinfo/getlist
-        [HttpGet("getlist")]
-        public async Task<IActionResult> GetDropInfos([FromQuery] GetDropInfoRequest request)
+        // POST: /api/profile/adduser
+        [HttpPost("adduser")]
+        public async Task<IActionResult> AddUserProfile([FromBody] AddUserProfileRequest request)
         {
             try
             {
-                var (totalRecords, dropInfos) = await _dropInfoService.GetDropInfosAsync(request);
-
-                return Ok(new
+                if (request == null)
                 {
-                    TotalRecords = totalRecords,
-                    DropInfos = dropInfos
-                });
+                    return BadRequest("UserProfile data is null.");
+                }
+
+                // Добавление пользователя через сервис
+                var userProfile = await _dropInfoService.AddUserProfileAsync(request);
+
+                // Возврат результата с кодом 201 (Created) и ссылкой на созданный ресурс
+                return CreatedAtAction(nameof(GetUserProfile), new { username = userProfile.Username }, userProfile);
             }
             catch (ArgumentException ex)
             {
@@ -39,9 +42,35 @@ namespace Profile.Api.Controllers
             }
         }
 
-        // POST: /api/dropinfo/add
-        [HttpPost("add")]
-        public async Task<IActionResult> AddDropInfo([FromBody] AddDropInfoRequest request)
+        // GET: /api/profile/getuser
+        [HttpGet("getuser")]
+        public async Task<IActionResult> GetUserProfile([FromQuery] GetUserProfileRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("Request data is null.");
+                }
+
+                // Получение пользователя через сервис
+                var userProfile = await _dropInfoService.GetUserProfileAsync(request);
+
+                return Ok(userProfile);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        // POST: /api/profile/adddropinfo
+        [HttpPost("adddropinfo")]
+        public async Task<IActionResult> AddDropInfoByUsername([FromBody] AddDropInfoByUsernameRequest request)
         {
             try
             {
@@ -51,10 +80,10 @@ namespace Profile.Api.Controllers
                 }
 
                 // Добавление DropInfo через сервис
-                var dropInfo = await _dropInfoService.AddDropInfoAsync(request);
+                var dropInfo = await _dropInfoService.AddDropInfoByUsernameAsync(request);
 
                 // Возврат результата с кодом 201 (Created) и ссылкой на созданный ресурс
-                return CreatedAtAction(nameof(GetDropInfos), new { id = dropInfo.Id }, dropInfo);
+                return CreatedAtAction(nameof(GetUserProfile), new { username = request.Username }, dropInfo);
             }
             catch (ArgumentException ex)
             {

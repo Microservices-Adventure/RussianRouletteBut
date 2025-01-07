@@ -14,64 +14,92 @@ namespace Profile.Api.Services
             _context = context;
         }
 
-        public async Task<(int TotalRecords, IEnumerable<DropInfo> DropInfos)> GetDropInfosAsync(GetDropInfoRequest request)
+        public async Task<UserProfile> AddUserProfileAsync(AddUserProfileRequest request)
         {
-            if (request.Page < 1 || request.Size < 1)
+            if (request == null)
             {
-                throw new ArgumentException("Page and size must be greater than 0.");
+                throw new ArgumentNullException(nameof(request), "UserProfile data is null.");
             }
 
-            var query = _context.DropInfos.AsQueryable();
-
-            if (!string.IsNullOrEmpty(request.ServiceName))
+            // Проверка обязательных полей
+            if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Email))
             {
-                query = query.Where(drop => drop.ServiceName == request.ServiceName);
+                throw new ArgumentException("Username and Email are required fields.");
             }
 
-            if (request.UserProfileId.HasValue)
+            // Проверка, существует ли пользователь с таким же Username
+            var existingUser = await _context.UserProfiles.FirstOrDefaultAsync(u => u.Username == request.Username);
+            if (existingUser != null)
             {
-                query = query.Where(drop => drop.UserProfileId == request.UserProfileId.Value);
+                throw new ArgumentException("User with this username already exists.");
             }
 
-            if (request.From.HasValue)
+            // Создание сущности UserProfile из запроса
+            var userProfile = new UserProfile
             {
-                query = query.Where(drop => drop.Moment >= request.From.Value);
-            }
+                Username = request.Username,
+                Email = request.Email,
+                History = new List<DropInfo>()
+            };
 
-            if (request.To.HasValue)
-            {
-                query = query.Where(drop => drop.Moment <= request.To.Value);
-            }
+            // Добавление записи в базу данных
+            _context.UserProfiles.Add(userProfile);
+            await _context.SaveChangesAsync();
 
-
-            var totalRecords = await query.CountAsync();
-            var dropInfos = await query
-                .Skip((int)((request.Page - 1) * request.Size))
-                .Take((int)request.Size)
-                .ToListAsync();
-
-            return (totalRecords, dropInfos);
+            return userProfile;
         }
 
-        public async Task<DropInfo> AddDropInfoAsync(AddDropInfoRequest request)
+        public async Task<UserProfile> GetUserProfileAsync(GetUserProfileRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request), "Request data is null.");
+            }
+
+            // Поиск пользователя по Username
+            var userProfile = await _context.UserProfiles
+                .Include(u => u.History)
+                .FirstOrDefaultAsync(u => u.Username == request.Username);
+
+            if (userProfile == null)
+            {
+                throw new ArgumentException("User not found.");
+            }
+
+            return userProfile;
+        }
+
+        public async Task<DropInfo> AddDropInfoByUsernameAsync(AddDropInfoByUsernameRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request), "DropInfo data is null.");
             }
 
-            if (string.IsNullOrWhiteSpace(request.ServiceName) || request.UserProfileId == 0)
+            // Проверка обязательных полей
+            if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.ServiceName))
             {
-                throw new ArgumentException("ServiceName and UserProfileId are required fields.");
+                throw new ArgumentException("Username and ServiceName are required fields.");
             }
 
+            // Поиск пользователя по Username
+            var userProfile = await _context.UserProfiles
+                .FirstOrDefaultAsync(u => u.Username == request.Username);
+
+            if (userProfile == null)
+            {
+                throw new ArgumentException("User not found.");
+            }
+
+            // Создание сущности DropInfo из запроса
             var dropInfo = new DropInfo
             {
                 ServiceName = request.ServiceName,
-                UserProfileId = request.UserProfileId,
-                Moment = request.Moment
+                Moment = request.Moment,
+                UserProfileId = userProfile.Id
             };
 
+            // Добавление записи в базу данных
             _context.DropInfos.Add(dropInfo);
             await _context.SaveChangesAsync();
 
