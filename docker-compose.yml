@@ -33,7 +33,21 @@ services:
       - ASPNETCORE_Kafka_Bootstrap_Servers=kafka:9092
       - ASPNETCORE_Postgres_Connection=User ID=postgres;Host=authorization-db;Port=5432;Database=auth-users-db;Pooling=true;
       - HealthSettings_CrashTime=15
-      - HealthSettings_CooldownTime=60
+      - HealthSettings_CooldownTime=15
+  
+  revolver-service:
+    container_name: revolver
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Backend/Revolver/Revolver.Api/Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8084
+      - HealthSettings_CrashTime=15
+      - HealthSettings_CooldownTime=15
 
   authorization-db:
     container_name: authorization-db
@@ -47,6 +61,18 @@ services:
       - "15432:5432"
     volumes:
       - auth-users-dbdata:/var/lib/postgresql/auth-users/data
+
+  actionlog-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_DB=action-log-db"
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    ports:
+      - 15433:5432
+    volumes:
+      - action-log-dbdata:/var/lib/postgresql/action-log/data
     
   kafka:
     image: wurstmeister/kafka:latest
@@ -80,6 +106,7 @@ services:
   
 volumes:
     auth-users-dbdata:
+    action-log-dbdata:
     kafkadata:
     zkdata:
     zkdatalog:

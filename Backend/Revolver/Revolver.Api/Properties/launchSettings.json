@@ -18,7 +18,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "HealthSettings_CrashTime": "15",
-        "HealthSettings_CooldownTime": "60"
+        "HealthSettings_CooldownTime": "15"
       }
     },
     "IIS Express": {
