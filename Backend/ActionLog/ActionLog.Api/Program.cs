@@ -1,4 +1,5 @@
 
+using ActionLog.Api.Config;
 using ActionLog.Api.DataAccess;
 using ActionLog.Api.Services;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,10 @@ namespace ActionLog.Api
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine($"Wait {HealthSettings.CrashTime} seconds. Loading.");
+            var startAt = HealthSettings.AppStartAt;
+            Console.WriteLine($"Starting at {startAt}.");
+            Thread.Sleep(TimeSpan.FromSeconds(HealthSettings.CrashTime));
             var builder = WebApplication.CreateBuilder(args);
             IConfiguration configuration = builder.Configuration;
 
