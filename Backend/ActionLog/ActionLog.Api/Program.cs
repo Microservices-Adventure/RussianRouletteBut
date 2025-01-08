@@ -19,12 +19,16 @@ namespace ActionLog.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
+            string connectionString = Environment.GetEnvironmentVariable("ASPNETCORE_Postgres_Connection") 
+                                      ?? configuration.GetConnectionString("DefaultConnection")!;
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(connectionString);
             });
 
             builder.Services.AddScoped<ILogService, LogService>();
+            builder.Services.AddScoped<IHealthService, HealthService>();
 
 
             var app = builder.Build();
@@ -43,7 +47,7 @@ namespace ActionLog.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
