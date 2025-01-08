@@ -15,6 +15,7 @@ services:
       - ASPNETCORE_AuthorizationService=authorization
       - ASPNETCORE_Kafka_Bootstrap_Servers=kafka:9092
       - REVOLVER_HOST=revolver
+      - ACTION_LOG_HOST=actionlog
   
   auth-service:
     container_name: authorization
@@ -48,6 +49,25 @@ services:
       - ASPNETCORE_URLS=http://+:8084
       - HealthSettings_CrashTime=15
       - HealthSettings_CooldownTime=15
+        
+  action-log-service:
+    container_name: actionlog
+    restart: always
+    depends_on:
+      - kafka
+      - actionlog-db
+    build:
+      context: .
+      dockerfile: ./Backend/ActionLog/ActionLog.Api/Dockerfile
+    ports:
+      - "8086:8086"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8086
+      - ASPNETCORE_Kafka_Bootstrap_Servers=kafka:9092
+      - ASPNETCORE_Postgres_Connection=User ID=postgres;Host=actionlog-db;Port=5433;Database=action-log-db;Pooling=true;
+      - HealthSettings_CrashTime=15
+      - HealthSettings_CooldownTime=15
 
   authorization-db:
     container_name: authorization-db
@@ -63,6 +83,7 @@ services:
       - auth-users-dbdata:/var/lib/postgresql/auth-users/data
 
   actionlog-db:
+    container_name: actionlog-db
     image: postgres:latest
     restart: always
     environment:
@@ -70,7 +91,7 @@ services:
       - "POSTGRES_DB=action-log-db"
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     ports:
-      - 15433:5432
+      - "15433:5432"
     volumes:
       - action-log-dbdata:/var/lib/postgresql/action-log/data
     
