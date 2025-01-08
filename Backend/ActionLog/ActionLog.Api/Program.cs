@@ -28,6 +28,7 @@ namespace ActionLog.Api
             });
 
             builder.Services.AddScoped<ILogService, LogService>();
+            builder.Services.AddScoped<IHealthService, HealthService>();
 
 
             var app = builder.Build();
