@@ -13,6 +13,7 @@ public class GunController : ControllerBase
     private readonly IRevolverService _revolverService; 
     private readonly IOptionsMonitor<ServicesParameters> _servicesOptions;
     private readonly IHostApplicationLifetime _lifetime;
+    
     public GunController(
         IRevolverService revolverService, 
         IOptionsMonitor<ServicesParameters> servicesOptions,
@@ -42,11 +43,11 @@ public class GunController : ControllerBase
         if (serviceInfo.ServiceName == "Revolver")
         {
             KillRevolver();
-            return Ok();
+            return Ok(serviceInfo);
         }
 
         _revolverService.Kill(serviceInfo);
-        return Ok();
+        return Ok(serviceInfo);
     }
 
     private void KillRevolver()

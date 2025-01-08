@@ -1,4 +1,5 @@
-﻿using Frontend.Features.Interfaces;
+﻿using Frontend.Entities.Revolver.Model;
+using Frontend.Features.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ public class RevolverController : Controller
     [HttpPost]
     public async Task<IActionResult> Shoot()
     {
-        bool result = await _revolverService.Shoot();
-        return result ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+        KilledServiceInfo result = await _revolverService.Shoot();
+        return Ok(result);
     }
 }

@@ -25,10 +25,10 @@
         const duration = 2700;
         setTimeout(() => {
             if (result) {
-                labelResult.innerHTML = "Какой-то сервис упал";
+                labelResult.innerHTML = "Сервис " + result.serviceNameRus + " упал";
             }
             else {
-                labelResult.innerHTML = "Штош, какой-то сервис выжил";
+                labelResult.innerHTML = "Какому-то сервису повезло выжить";
             }
             revolver.setAttribute("src", 'lib/revolver/revolverV1.png');
             revolverButton.removeAttribute("disabled");
@@ -43,8 +43,12 @@
             headers: {"Accept": "application/json"},
             body: JSON.stringify(null)
         });
-        console.log(response.status);
-        console.log(response);
-        return response.ok;
+        if (response.ok){
+            console.log(response.status);
+            const responseJson = await response.json();
+            console.log(responseJson);
+            return responseJson;
+        }
+        return false;
     }
 </script>
