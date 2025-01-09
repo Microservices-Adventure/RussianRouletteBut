@@ -5,10 +5,12 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "HealthSettings_CrashTime": "15",
+        "HealthSettings_CooldownTime": "15"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5066"
+      "applicationUrl": "http://localhost:8086"
     },
     "https": {
       "commandName": "Project",
@@ -18,7 +20,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7222;http://localhost:5066"
+      "applicationUrl": "https://localhost:8087;http://localhost:8086"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -33,8 +35,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTPS_PORTS": "8087",
+        "ASPNETCORE_HTTP_PORTS": "8086"
       },
       "publishAllPorts": true,
       "useSSL": true

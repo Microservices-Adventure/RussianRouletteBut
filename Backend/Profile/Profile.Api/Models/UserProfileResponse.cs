@@ -1,10 +1,14 @@
-﻿namespace Profile.Api.Models
+﻿using Profile.Api.DataAccess.Entity;
+
+namespace Profile.Api.Models
 {
-    public class UserProfileResponse
+    public record UserProfileResponse
     {
-        public long Id { get; set; }
-        public string Username { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public List<DropInfoResponse> History { get; set; } = [];
+        public required long Id { get; init; }
+        public required string Username { get; init; } = null!;
+        public required string Email { get; init; } = null!;
+        public required List<DropInfo> History { get; init; } = [];
+
+
     }
 }

@@ -16,7 +16,9 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:8084",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "HealthSettings_CrashTime": "15",
+        "HealthSettings_CooldownTime": "15"
       }
     },
     "IIS Express": {

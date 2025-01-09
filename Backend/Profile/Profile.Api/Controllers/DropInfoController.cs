@@ -55,8 +55,14 @@ namespace Profile.Api.Controllers
 
                 // Получение пользователя через сервис
                 var userProfile = await _dropInfoService.GetUserProfileAsync(request);
+                UserProfileResponse userProfileResponse = new UserProfileResponse() { 
+                    Username = userProfile.Username,
+                    Id = userProfile.Id,
+                    Email = userProfile.Email,
+                    History = userProfile.History.ToList()
+                };
 
-                return Ok(userProfile);
+                return Ok(userProfileResponse);
             }
             catch (ArgumentException ex)
             {
