@@ -4,6 +4,7 @@ using ActionLog.Api.DataAccess;
 using ActionLog.Api.DataAccess.Entity;
 using ActionLog.Api.Models;
 using ActionLog.Api.Services;
+using System.Threading;
 
 namespace ActionLog.Api.Controllers
 {
@@ -13,14 +14,15 @@ namespace ActionLog.Api.Controllers
     {
         private readonly AppDbContext _context;
         private readonly ILogService _logService;
+        private readonly IHostApplicationLifetime _appLifetime;
 
-        public LogsController(AppDbContext context, ILogService logService)
+        public LogsController(AppDbContext context, ILogService logService, IHostApplicationLifetime appLifetime)
         {
             _context = context;
             _logService = logService;
+            _appLifetime = appLifetime;
         }
 
-        // GET: /api/logs/getlist
         [HttpGet("getlist")]
         public async Task<IActionResult> GetLogs([FromQuery] GetLogsRequest request)
         {
@@ -44,10 +46,11 @@ namespace ActionLog.Api.Controllers
             }
         }
 
-        // POST: /api/logs/add
         [HttpPost("add")]
         public async Task<IActionResult> AddLog([FromBody] AddLogRequest request)
         {
+            var stoppingToken = _appLifetime.ApplicationStopping;
+
             try
             {
                 if (request == null)
@@ -55,15 +58,13 @@ namespace ActionLog.Api.Controllers
                     return BadRequest("Log data is null.");
                 }
 
-                // Добавление лога через сервис
-                var log = await _logService.AddLogAsync(request);
+                var log = await _logService.AddLogAsync(request, stoppingToken);
 
-                // Возврат результата с кодом 201 (Created) и ссылкой на созданный ресурс
                 return CreatedAtAction(nameof(GetLogs), new { id = log.Id }, log);
             }
-            catch (ArgumentException ex)
+            catch (OperationCanceledException)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(499, "Application is stopping.");
             }
             catch (Exception ex)
             {

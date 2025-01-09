@@ -1,4 +1,5 @@
 
+using ActionLog.Api.BackgroundServices;
 using ActionLog.Api.Config;
 using ActionLog.Api.DataAccess;
 using ActionLog.Api.Services;
@@ -34,7 +35,8 @@ namespace ActionLog.Api
 
             builder.Services.AddScoped<ILogService, LogService>();
             builder.Services.AddScoped<IHealthService, HealthService>();
-
+            builder.Services.AddHostedService<LogBackgroundService>();
+            builder.Services.Configure<KafkaSettings>(configuration.GetSection(nameof(KafkaSettings)));
 
             var app = builder.Build();
 

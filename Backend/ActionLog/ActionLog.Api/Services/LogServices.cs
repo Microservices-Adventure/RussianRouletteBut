@@ -80,7 +80,7 @@ namespace ActionLog.Api.Services
                 return (totalRecords, logs);
             }
 
-            public async Task<ALog> AddLogAsync(AddLogRequest request)
+            public async Task<ALog> AddLogAsync(AddLogRequest request, CancellationToken ct)
             {
                 if (request == null)
                 {
@@ -110,7 +110,7 @@ namespace ActionLog.Api.Services
 
                 // Добавление записи в базу данных
                 _context.ActionLogs.Add(log);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(ct);
 
                 return log;
             }
