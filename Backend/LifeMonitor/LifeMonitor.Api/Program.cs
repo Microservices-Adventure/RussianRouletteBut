@@ -1,4 +1,6 @@
 
+using LifeMonitor.Api.Services;
+
 namespace LifeMonitor.Api
 {
     public class Program
@@ -13,6 +15,7 @@ namespace LifeMonitor.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<IMonitorService, MonitorService>();
 
             var app = builder.Build();
 

@@ -26,11 +26,19 @@ namespace LifeMonitor.Api.Controllers
         public async Task<IActionResult> GetLifes()
         {
             List<LifeServiceModel> lifeServiceModels = [];
-            foreach (var serviceHost in ServiceHostsPorts)
+            try
             {
-                lifeServiceModels.Add(await _monitorService.GetLife(serviceHost.Key, serviceHost.Value));
+                foreach (var serviceHost in ServiceHostsPorts)
+                {
+                    lifeServiceModels.Add(await _monitorService.GetLife(serviceHost.Key, serviceHost.Value));
+                }
+                return Ok(lifeServiceModels);
             }
-            return Ok(lifeServiceModels);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+            
 
         }
 
