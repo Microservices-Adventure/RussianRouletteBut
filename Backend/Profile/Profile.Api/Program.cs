@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Profile.Api.BackgroundServices;
+using Profile.Api.Config;
 using Profile.Api.DataAccess;
 using Profile.Api.Services;
 
