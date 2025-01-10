@@ -1,21 +1,16 @@
 
-using ActionLog.Api.BackgroundServices;
-using ActionLog.Api.Config;
-using ActionLog.Api.DataAccess;
-using ActionLog.Api.Services;
 using Microsoft.EntityFrameworkCore;
-using static ActionLog.Api.Services.LogServices;
+using Profile.Api.BackgroundServices;
+using Profile.Api.Config;
+using Profile.Api.DataAccess;
+using Profile.Api.Services;
 
-namespace ActionLog.Api
+namespace Profile.Api
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine($"Wait {HealthSettings.CrashTime} seconds. Loading.");
-            var startAt = HealthSettings.AppStartAt;
-            Console.WriteLine($"Starting at {startAt}.");
-            Thread.Sleep(TimeSpan.FromSeconds(HealthSettings.CrashTime));
             var builder = WebApplication.CreateBuilder(args);
             IConfiguration configuration = builder.Configuration;
 
@@ -25,18 +20,15 @@ namespace ActionLog.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            
-            string connectionString = Environment.GetEnvironmentVariable("ASPNETCORE_Postgres_Connection") 
-                                      ?? configuration.GetConnectionString("DefaultConnection")!;
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(connectionString);
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped<ILogService, LogService>();
-            builder.Services.AddScoped<IHealthService, HealthService>();
-            builder.Services.AddHostedService<LogBackgroundService>();
+            builder.Services.AddScoped<IDropInfoService, DropInfoService>();
+            builder.Services.AddHostedService<ProfileBackgroundService>();
             builder.Services.Configure<KafkaSettings>(configuration.GetSection(nameof(KafkaSettings)));
+
 
             var app = builder.Build();
 
@@ -54,7 +46,7 @@ namespace ActionLog.Api
                 app.UseSwaggerUI();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
@@ -64,6 +56,4 @@ namespace ActionLog.Api
             app.Run();
         }
     }
-
-
 }

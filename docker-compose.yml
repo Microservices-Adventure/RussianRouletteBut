@@ -108,6 +108,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_CREATE_TOPICS: >-
         auth_register_events:1:1
+        add_log_events:1:1
+        add_profile_events:1:1
     ports:
       - 9092:9092
     expose:
