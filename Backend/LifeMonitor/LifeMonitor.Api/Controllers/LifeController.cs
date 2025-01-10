@@ -1,4 +1,5 @@
-﻿using LifeMonitor.Api.Services;
+﻿using LifeMonitor.Api.Models;
+using LifeMonitor.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LifeMonitor.Api.Controllers
@@ -20,5 +21,18 @@ namespace LifeMonitor.Api.Controllers
             _monitorService = monitorService;
             
         }
+
+        [HttpGet("getlifes")]
+        public async Task<IActionResult> GetLifes()
+        {
+            List<LifeServiceModel> lifeServiceModels = [];
+            foreach (var serviceHost in ServiceHostsPorts)
+            {
+                lifeServiceModels.Add(await _monitorService.GetLife(serviceHost.Key, serviceHost.Value));
+            }
+            return Ok(lifeServiceModels);
+
+        }
+
     }
 }

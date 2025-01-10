@@ -10,7 +10,7 @@
         "HealthSettings_CooldownTime": "15"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5288"
+      "applicationUrl": "http://localhost:8088"
     },
     "https": {
       "commandName": "Project",
