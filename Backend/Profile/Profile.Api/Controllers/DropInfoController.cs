@@ -9,10 +9,12 @@ namespace Profile.Api.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IDropInfoService _dropInfoService;
+        private readonly IHostApplicationLifetime _appLifetime;
 
-        public ProfileController(IDropInfoService dropInfoService)
+        public ProfileController(IDropInfoService dropInfoService, IHostApplicationLifetime appLifetime)
         {
             _dropInfoService = dropInfoService;
+            _appLifetime = appLifetime;
         }
 
         // POST: /api/profile/adduser
@@ -78,6 +80,7 @@ namespace Profile.Api.Controllers
         [HttpPost("adddropinfo")]
         public async Task<IActionResult> AddDropInfoByUsername([FromBody] AddDropInfoByUsernameRequest request)
         {
+            var stoppingToken = _appLifetime.ApplicationStopping;
             try
             {
                 if (request == null)
@@ -86,7 +89,7 @@ namespace Profile.Api.Controllers
                 }
 
                 // Добавление DropInfo через сервис
-                var dropInfo = await _dropInfoService.AddDropInfoByUsernameAsync(request);
+                var dropInfo = await _dropInfoService.AddDropInfoByUsernameAsync(request, stoppingToken);
 
                 // Возврат результата с кодом 201 (Created) и ссылкой на созданный ресурс
                 return CreatedAtAction(nameof(GetUserProfile), new { username = request.Username }, dropInfo);

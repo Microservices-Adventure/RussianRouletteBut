@@ -69,7 +69,7 @@ namespace Profile.Api.Services
             return userProfile;
         }
 
-        public async Task<DropInfo> AddDropInfoByUsernameAsync(AddDropInfoByUsernameRequest request)
+        public async Task<DropInfo> AddDropInfoByUsernameAsync(AddDropInfoByUsernameRequest request, CancellationToken ct)
         {
             if (request == null)
             {

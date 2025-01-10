@@ -1,16 +1,21 @@
-﻿namespace Profile.Api.BackgroundServices
+﻿using Microsoft.Extensions.Options;
+using Profile.Api.Config;
+using Profile.Api.Kafka;
+using Profile.Api.Services;
+
+namespace Profile.Api.BackgroundServices
 {
-    public class ProfileBackgroundService
+    public class ProfileBackgroundService : BackgroundService
     {
-        private readonly LogConsumer _profileConsumer;
+        private readonly DropConsumer _profileConsumer;
         private readonly IServiceScope _scope;
 
-        public LogBackgroundService(IOptions<KafkaSettings> kafkaOptions, ILogger<LogConsumer> consumerLogger, IServiceScopeFactory serviceScopeFactory)
+        public ProfileBackgroundService(IOptions<KafkaSettings> kafkaOptions, ILogger<DropConsumer> consumerLogger, IServiceScopeFactory serviceScopeFactory)
         {
             _scope = serviceScopeFactory.CreateScope();
-            var logService = _scope.ServiceProvider.GetRequiredService<ILogService>();
+            var logService = _scope.ServiceProvider.GetRequiredService<IDropInfoService>();
 
-            _profileConsumer = new LogConsumer(
+            _profileConsumer = new DropConsumer(
                 kafkaOptions.Value.BootstrapServers,
                 kafkaOptions.Value.Topic,
                 kafkaOptions.Value.ConsumerGroupId,

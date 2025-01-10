@@ -1,20 +1,22 @@
 ﻿using Confluent.Kafka;
+using Profile.Api.DataAccess.Entity;
+using Profile.Api.Models;
 using Profile.Api.Services;
 using System.Text.Json;
 
 namespace Profile.Api.Kafka
 {
-    public class ProfileConsumer
+    public class DropConsumer
     {
         private readonly IConsumer<Ignore, string> _consumer;
-        private readonly ILogger<ProfileConsumer> _logger;
+        private readonly ILogger<DropConsumer> _logger;
         private readonly IDropInfoService _dropService;
 
-        public ProfileConsumer(
+        public DropConsumer(
             string bootstrapServers,
             string topic,
             string groupId,
-            ILogger<ProfileConsumer> logger,
+            ILogger<DropConsumer> logger,
             IDropInfoService dropService)
         {
             var builder = new ConsumerBuilder<Ignore, string>(
@@ -46,7 +48,7 @@ namespace Profile.Api.Kafka
                 _logger.LogInformation("Drop request: {result}", result.Message.Value);
                 try
                 {
-                    var registerResult = await TryLog(result, stoppingToken);
+                    var registerResult = await DropLog(result, stoppingToken);
 
                     if (registerResult)
                     {
@@ -66,15 +68,15 @@ namespace Profile.Api.Kafka
             }
         }
 
-        private async Task<bool> TryLog(ConsumeResult<Ignore, string> result, CancellationToken ct)
+        private async Task<bool> DropLog(ConsumeResult<Ignore, string> result, CancellationToken ct)
         {
-            AddLogRequest? userModel = JsonSerializer.Deserialize<AddLogRequest>(result.Message.Value);
+            AddDropInfoByUsernameRequest? userModel = JsonSerializer.Deserialize<AddDropInfoByUsernameRequest>(result.Message.Value);
             if (userModel == null)
             {
-                throw new Exception("AddLogRequest is null");
+                throw new Exception("AddDropInfoByUsernameRequest is null");
             }
-            ALog aLog = await _dropService.AddLogAsync(userModel, ct);
-            return aLog != null;
+            DropInfo drop = await _dropService.AddDropInfoByUsernameAsync(userModel, ct);
+            return drop != null;
         }
 
         public void Dispose()

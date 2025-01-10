@@ -7,6 +7,6 @@ namespace Profile.Api.Services
     {
         Task<UserProfile> AddUserProfileAsync(AddUserProfileRequest request);
         Task<UserProfile> GetUserProfileAsync(GetUserProfileRequest request);
-        Task<DropInfo> AddDropInfoByUsernameAsync(AddDropInfoByUsernameRequest request);
+        Task<DropInfo> AddDropInfoByUsernameAsync(AddDropInfoByUsernameRequest request, CancellationToken ct);
     }
 }
