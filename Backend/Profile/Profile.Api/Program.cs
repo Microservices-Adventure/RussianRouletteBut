@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using Profile.Api.BackgroundServices;
 using Profile.Api.DataAccess;
 using Profile.Api.Services;
 
@@ -24,6 +25,8 @@ namespace Profile.Api
             });
 
             builder.Services.AddScoped<IDropInfoService, DropInfoService>();
+            builder.Services.AddHostedService<ProfileBackgroundService>();
+            builder.Services.Configure<KafkaSettings>(configuration.GetSection(nameof(KafkaSettings)));
 
 
             var app = builder.Build();
