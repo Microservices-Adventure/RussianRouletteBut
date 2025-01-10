@@ -22,9 +22,9 @@ namespace Profile.Api.Services
             }
 
             // Проверка обязательных полей
-            if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Email))
+            if (string.IsNullOrWhiteSpace(request.Username))
             {
-                throw new ArgumentException("Username and Email are required fields.");
+                throw new ArgumentException("Username are required fields.");
             }
 
             // Проверка, существует ли пользователь с таким же Username
@@ -45,7 +45,7 @@ namespace Profile.Api.Services
             // Добавление записи в базу данных
             _context.UserProfiles.Add(userProfile);
             await _context.SaveChangesAsync();
-
+            userProfile = await GetUserProfileAsync(new GetUserProfileRequest { Username = request.Username });
             return userProfile;
         }
 
@@ -88,7 +88,11 @@ namespace Profile.Api.Services
 
             if (userProfile == null)
             {
-                throw new ArgumentException("User not found.");
+                userProfile = await AddUserProfileAsync(new AddUserProfileRequest()
+                {
+                    Email = String.Empty,
+                    Username = request.Username,
+                });
             }
 
             // Создание сущности DropInfo из запроса
