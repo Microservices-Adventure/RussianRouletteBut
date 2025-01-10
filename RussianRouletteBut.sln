@@ -37,6 +37,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Profile", "Profile", "{4ADD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profile.Api", "Backend\Profile\Profile.Api\Profile.Api.csproj", "{07637AD5-D2BF-47FE-950E-BBEF08852732}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LifeMonitor", "LifeMonitor", "{33CED26F-59EE-46DE-A65C-E4FF4AE5F563}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeMonitor.Api", "Backend\LifeMonitor\LifeMonitor.Api\LifeMonitor.Api.csproj", "{30A7E937-3867-4EE3-9C92-F2917C9D9253}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,10 @@ Global
 		{07637AD5-D2BF-47FE-950E-BBEF08852732}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07637AD5-D2BF-47FE-950E-BBEF08852732}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07637AD5-D2BF-47FE-950E-BBEF08852732}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30A7E937-3867-4EE3-9C92-F2917C9D9253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A7E937-3867-4EE3-9C92-F2917C9D9253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A7E937-3867-4EE3-9C92-F2917C9D9253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A7E937-3867-4EE3-9C92-F2917C9D9253}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +103,8 @@ Global
 		{34F85660-A43D-4871-AF17-ECE91B28AD35} = {CB4B8118-1CDF-4BED-A2B8-01229C00A23C}
 		{4ADD1A65-C138-4CA1-8D6D-9B70259DD745} = {0E4BCF84-ED15-4B0F-8648-3CB02D172EF4}
 		{07637AD5-D2BF-47FE-950E-BBEF08852732} = {4ADD1A65-C138-4CA1-8D6D-9B70259DD745}
+		{33CED26F-59EE-46DE-A65C-E4FF4AE5F563} = {0E4BCF84-ED15-4B0F-8648-3CB02D172EF4}
+		{30A7E937-3867-4EE3-9C92-F2917C9D9253} = {33CED26F-59EE-46DE-A65C-E4FF4AE5F563}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2EAD3B1-5A1B-4D39-B4B1-CA5E9BBB15CF}

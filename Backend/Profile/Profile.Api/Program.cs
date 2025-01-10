@@ -46,8 +46,6 @@ namespace Profile.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseAuthorization();
 
 
