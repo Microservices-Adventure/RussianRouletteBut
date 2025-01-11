@@ -11,7 +11,7 @@ public class RevolverService : IRevolverService
         httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
         using var httpClient = new HttpClient(httpClientHandler);
         
-        List<string> baseBullet = ["Authorization", "Revolver", "ActionLog"];
+        List<string> baseBullet = ["Authorization", "Revolver", "ActionLog", "Profile"];
         ShootRequest request = new ShootRequest() { Bullets = baseBullet };
         JsonContent content = JsonContent.Create(request);
         
