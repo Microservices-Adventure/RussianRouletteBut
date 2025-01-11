@@ -3,22 +3,22 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 8088
+EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Backend/Profile/Profile.Api/Profile.Api.csproj", "Backend/Profile/Profile.Api/"]
-RUN dotnet restore "./Backend/Profile/Profile.Api/Profile.Api.csproj"
+COPY ["LifeMonitor.Api/LifeMonitor.Api.csproj", "LifeMonitor.Api/"]
+RUN dotnet restore "./LifeMonitor.Api/LifeMonitor.Api.csproj"
 COPY . .
-WORKDIR "/src/Backend/Profile/Profile.Api"
-RUN dotnet build "./Profile.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/LifeMonitor.Api"
+RUN dotnet build "./LifeMonitor.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Profile.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./LifeMonitor.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Profile.Api.dll"]
+ENTRYPOINT ["dotnet", "LifeMonitor.Api.dll"]
