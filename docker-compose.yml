@@ -34,7 +34,7 @@ services:
       - ASPNETCORE_Kafka_Bootstrap_Servers=kafka:9092
       - ASPNETCORE_Postgres_Connection=User ID=postgres;Host=authorization-db;Port=15432;Database=auth-users-db;Pooling=true;
       - HealthSettings_CrashTime=15
-      - HealthSettings_CooldownTime=15
+      - HealthSettings_CooldownTime=30
   
   revolver-service:
     container_name: revolver
@@ -48,7 +48,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8084
       - HealthSettings_CrashTime=15
-      - HealthSettings_CooldownTime=15
+      - HealthSettings_CooldownTime=30
         
   action-log-service:
     container_name: actionlog
@@ -67,7 +67,7 @@ services:
       - ASPNETCORE_Kafka_Bootstrap_Servers=kafka:9092
       - ASPNETCORE_Postgres_Connection=User ID=postgres;Host=actionlog-db;Port=15433;Database=action-log-db;Pooling=true;
       - HealthSettings_CrashTime=15
-      - HealthSettings_CooldownTime=15
+      - HealthSettings_CooldownTime=30
 
   profile-service:
     container_name: profile
@@ -86,7 +86,19 @@ services:
       - ASPNETCORE_Kafka_Bootstrap_Servers=kafka:9092
       - ASPNETCORE_Postgres_Connection=User ID=postgres;Host=profile-db;Port=15434;Database=profile-db;Pooling=true;
       - HealthSettings_CrashTime=15
-      - HealthSettings_CooldownTime=15
+      - HealthSettings_CooldownTime=30
+      
+  lifemonitor-service:
+    container_name: lifemonitor
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Backend/LifeMonitor/LifeMonitor.Api/Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8090
 
   authorization-db:
     container_name: authorization-db
