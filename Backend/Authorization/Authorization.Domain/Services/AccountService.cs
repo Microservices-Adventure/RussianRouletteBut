@@ -1,9 +1,13 @@
-﻿using Authorization.Domain.Entities;
+﻿using Authorization.Domain.Config;
+using Authorization.Domain.Entities;
+using Authorization.Domain.Kafka;
 using Authorization.Domain.Models;
 using Authorization.Domain.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Authorization.Domain.Services;
 
@@ -15,19 +19,23 @@ public class AccountService : IAccountService
     private readonly IValidator<RegisterUserModel> _registerUserModelValidator;
     private readonly IValidator<LoginUserModel> _loginUserModelValidator;
     private const string UnauthorizedExceptionMessage = "Username or password is incorrect.";
+    private readonly LogProducer _logProducer;
 
     public AccountService(
         UserManager<User> userManager, 
         SignInManager<User> signInManager, 
         ITokenService tokenService,
         IValidator<RegisterUserModel> registerUserModelValidator,
-        IValidator<LoginUserModel> loginUserModelValidator)
+        IValidator<LoginUserModel> loginUserModelValidator,
+        IOptions<KafkaSettings> kafkaSettings,
+        ILogger<LogProducer> logProducer)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
         _registerUserModelValidator = registerUserModelValidator;
         _loginUserModelValidator = loginUserModelValidator;
+        _logProducer = new LogProducer(kafkaSettings.Value.BootstrapServers, kafkaSettings.Value.LogTopic, logProducer);
     }
 
     public async Task<LoginUserResult> Login(LoginUserModel loginUserModel, CancellationToken ct)
@@ -68,6 +76,19 @@ public class AccountService : IAccountService
         if (createdUser.Succeeded)
         {
             var roleResult = await _userManager.AddToRoleAsync(user, Roles.User.ToString());
+            if (roleResult.Succeeded)
+            {
+                _logProducer.AddLog(new AddLogRequest()
+                {
+                    Description = "Пользователь успешно зарегистрировался!",
+                    Email = user.Email,
+                    Error = null,
+                    MicroserviceId = 1,
+                    MicroserviceName = "Authorization",
+                    Username = user.UserName,
+                    Status = "Success"
+                });
+            }
             return roleResult.Succeeded;
         }
         else

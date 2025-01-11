@@ -1,5 +1,4 @@
 ﻿using Authorization.Api.BackgroundServices;
-using Authorization.Api.Config;
 using Authorization.Api.Extensions;
 using Authorization.Domain.Config;
 using Authorization.Domain.Entities;

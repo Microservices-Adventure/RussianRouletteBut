@@ -1,4 +1,4 @@
-﻿using Authorization.Api.Config;
+﻿using Authorization.Domain.Config;
 using Authorization.Domain.Services.Interfaces;
 using Authorization.Infrastructure.Kafka;
 using Microsoft.Extensions.Options;

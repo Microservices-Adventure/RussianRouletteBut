@@ -1,4 +1,4 @@
-using Authorization.Api.Config;
+using Authorization.Domain.Config;
 
 namespace XUnitTestProject.AuthorizationTests;
 
