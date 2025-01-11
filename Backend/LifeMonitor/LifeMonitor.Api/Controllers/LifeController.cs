@@ -8,18 +8,18 @@ namespace LifeMonitor.Api.Controllers
     [Route("api/life")]
     public class LifeController : ControllerBase
     {
-        private static Dictionary<string, string> ServiceHostsPorts = new()
-        {
-            { "localhost", "8082" }, // Authorization
-            { "localhost", "8084" }, // Revolver
-            { "localhost", "8086" }, // ActionLog
-            { "localhost", "8088" } // Profile
-        };
         private readonly IMonitorService _monitorService;
+        private static readonly Dictionary<string, string> ServiceHostsPorts = new()
+        {
+            { "authorization", "8082" }, // Authorization
+            { "revolver", "8084" }, // Revolver
+            { "actionlog", "8086" }, // ActionLog
+            { "profile", "8088" } // Profile
+        };
+        
         public LifeController(IMonitorService monitorService)
         {
             _monitorService = monitorService;
-            
         }
 
         [HttpGet("getlifes")]
