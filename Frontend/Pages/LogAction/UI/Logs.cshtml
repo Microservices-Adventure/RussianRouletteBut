@@ -4,31 +4,70 @@
 
 <div class="mx-5">
     <h3 class="ms-3">События</h3>
-    <table class="table table-secondary table-striped">
+    <table id="logsTable" class="table table-secondary table-striped">
         <thead>
         <tr>
-            <td>#</td><td>Источник</td><td>Описание</td><td>Дата и время</td>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Microservice Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Error</th>
+            <th>Moment</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>#1</td><td>Источник</td><td>Описание события, которое произошло</td><td>12/12/2024 20:42</td>
-        </tr>
-        <tr>
-            <td>#1</td><td>Источник</td><td>Описание события, которое произошло</td><td>12/12/2024 20:42</td>
-        </tr>
-        <tr>
-            <td>#1</td><td>Источник</td><td>Описание события, которое произошло</td><td>12/12/2024 20:42</td>
-        </tr>
-        <tr>
-            <td>#1</td><td>Источник</td><td>Описание события, которое произошло</td><td>12/12/2024 20:42</td>
-        </tr>
-        <tr>
-            <td>#1</td><td>Источник</td><td>Описание события, которое произошло</td><td>12/12/2024 20:42</td>
-        </tr>
-        <tr>
-            <td>#1</td><td>Источник</td><td>Описание события, которое произошло</td><td>12/12/2024 20:42</td>
-        </tr>
         </tbody>
     </table>
 </div>
+
+<script>
+    async function loadLogs() {
+        try {
+            const response = await fetch('/LogAction/GetLogs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Page: 1,
+                    Size: 10
+                }),
+            });
+
+            if (!response.ok) {
+                console.error('Failed to fetch logs:', response.status);
+                return;
+            }
+
+            const data = await response.json();
+
+            if (data && data.logs) {
+                const tableBody = document.querySelector('#logsTable tbody');
+                tableBody.innerHTML = ''; 
+
+                data.logs.forEach(log => {
+                    const row = `<tr>
+                        <td>${log.id}</td>
+                        <td>${log.username || '-'}</td>
+                        <td>${log.email || '-'}</td>
+                        <td>${log.microserviceName}</td>
+                        <td>${log.description}</td>
+                        <td>${log.status}</td>
+                        <td>${log.error || '-'}</td>
+                        <td>${new Date(log.moment).toLocaleString()}</td>
+                    </tr>`;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            }
+        } catch (error) {
+            console.error('Error loading logs:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadLogs();
+        setInterval(loadLogs, 5000);
+    });
+</script>

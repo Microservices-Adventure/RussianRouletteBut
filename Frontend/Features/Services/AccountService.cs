@@ -3,6 +3,7 @@ using Frontend.App.Config;
 using Frontend.App.Kafka;
 using Frontend.Entities.Account.Lib.Exceptions;
 using Frontend.Entities.Account.Model;
+using Frontend.Entities.ActionLog;
 using Frontend.Features.Services.Interfaces;
 using Microsoft.Extensions.Options;
 
@@ -12,11 +13,14 @@ internal sealed class AccountService : IAccountService
 {
     private readonly RegisterProducer _registerProducer;
     private readonly string _authorizationHost;
+    private readonly ILogService _logService;
 
     public AccountService(
         ILogger<RegisterProducer> registerProducerLogger,
-        IOptions<KafkaSettings> kafkaSettings)
+        IOptions<KafkaSettings> kafkaSettings,
+        ILogService logService)
     {
+        _logService = logService;
         _registerProducer = new RegisterProducer(
             kafkaSettings.Value.BootstrapServers,
             kafkaSettings.Value.RegistrationTopic,
@@ -51,7 +55,18 @@ internal sealed class AccountService : IAccountService
     }
 
     public async Task Register(RegisterModel registerModel)
-    {
+    {  
         await _registerProducer.Register(registerModel);
+        await _logService.SendLog(new AddLogRequest()
+        {
+            Description = "Заявка на регистрацию отправлена",
+            Email = registerModel.Email,
+            Error = null,
+            MicroserviceId = 1,
+            MicroserviceName = "Authorization",
+            Status = "Processing",
+            Username = registerModel.Username,
+            Moment = DateTimeOffset.Now
+        });
     }
 }

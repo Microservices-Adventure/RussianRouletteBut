@@ -5,5 +5,5 @@ namespace Frontend.Features.Services.Interfaces;
 
 public interface IRevolverService
 {
-    Task<KilledServiceInfo> Shoot();
+    Task<KilledServiceInfo> Shoot(ShootMan shootMan);
 }
