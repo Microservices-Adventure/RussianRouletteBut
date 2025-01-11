@@ -1,5 +1,5 @@
 ﻿using Frontend.Entities.Revolver.Model;
-using Frontend.Features.Interfaces;
+using Frontend.Features.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

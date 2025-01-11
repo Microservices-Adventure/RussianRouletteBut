@@ -1,6 +1,6 @@
 using Frontend.Entities.Account.Model;
 
-namespace Frontend.Features.Interfaces;
+namespace Frontend.Features.Services.Interfaces;
 
 public interface IAccountService
 {

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Frontend.Entities.Account.Model;
-using Frontend.Features.Interfaces;
+using Frontend.Features.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;

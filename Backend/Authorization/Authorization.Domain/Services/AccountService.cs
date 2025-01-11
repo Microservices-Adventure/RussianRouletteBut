@@ -86,7 +86,8 @@ public class AccountService : IAccountService
                     MicroserviceId = 1,
                     MicroserviceName = "Authorization",
                     Username = user.UserName,
-                    Status = "Success"
+                    Status = "Success",
+                    Moment = DateTimeOffset.Now
                 });
             }
             return roleResult.Succeeded;

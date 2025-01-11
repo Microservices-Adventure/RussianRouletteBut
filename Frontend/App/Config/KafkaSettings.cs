@@ -8,4 +8,5 @@ public class KafkaSettings
         set => _bootstrapServer = value; 
     }
     public string RegistrationTopic { get; set; } = null!;
+    public string LogTopic { get; set; } = null!;
 }

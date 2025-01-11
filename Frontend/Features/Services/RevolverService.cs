@@ -1,7 +1,7 @@
 using Frontend.Entities.Revolver.Model;
-using Frontend.Features.Interfaces;
+using Frontend.Features.Services.Interfaces;
 
-namespace Frontend.Features;
+namespace Frontend.Features.Services;
 
 public class RevolverService : IRevolverService
 {

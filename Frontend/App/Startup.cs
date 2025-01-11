@@ -2,7 +2,8 @@ using Frontend.App.Config;
 using Frontend.App.Extensions;
 using Frontend.App.Middlewares;
 using Frontend.Features;
-using Frontend.Features.Interfaces;
+using Frontend.Features.Services;
+using Frontend.Features.Services.Interfaces;
 
 namespace Frontend.App;
 
@@ -31,6 +32,7 @@ public class Startup
         services.AddExceptionHandler<AppExceptionHandler>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IRevolverService, RevolverService>();
+        services.AddScoped<ILogService, LogService>();
 
         services.AddApplicationAuthorization(_configuration);
     }
