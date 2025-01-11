@@ -16,6 +16,7 @@ services:
       - ASPNETCORE_Kafka_Bootstrap_Servers=kafka:9092
       - REVOLVER_HOST=revolver
       - ACTION_LOG_HOST=actionlog
+      - PROFILE_HOST=profile
   
   auth-service:
     container_name: authorization
