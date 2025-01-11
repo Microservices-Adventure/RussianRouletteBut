@@ -1,4 +1,4 @@
-﻿namespace Authorization.Api.Config;
+﻿namespace Authorization.Domain.Config;
 
 public class KafkaSettings
 {
@@ -9,5 +9,6 @@ public class KafkaSettings
         init => _bootstrapServers = value;
     }
     public string Topic { get; set; } = null!;
+    public string LogTopic { get; set; } = null!;
     public string ConsumerGroupId { get; set; } = null!;
 }
