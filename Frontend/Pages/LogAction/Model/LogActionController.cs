@@ -4,8 +4,5 @@ namespace Frontend.Pages.LogAction.Model;
 
 public class LogActionController : Controller
 {
-    // public IActionResult Logs()
-    // {
-    //     return View();
-    // }
+    
 }

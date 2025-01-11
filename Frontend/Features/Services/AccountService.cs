@@ -3,10 +3,10 @@ using Frontend.App.Config;
 using Frontend.App.Kafka;
 using Frontend.Entities.Account.Lib.Exceptions;
 using Frontend.Entities.Account.Model;
-using Frontend.Features.Interfaces;
+using Frontend.Features.Services.Interfaces;
 using Microsoft.Extensions.Options;
 
-namespace Frontend.Features;
+namespace Frontend.Features.Services;
 
 internal sealed class AccountService : IAccountService
 {

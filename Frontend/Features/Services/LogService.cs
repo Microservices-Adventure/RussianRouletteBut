@@ -1,14 +1,18 @@
+using Frontend.App.Config;
 using Frontend.Entities.ActionLog;
-using Frontend.Features.Interfaces;
+using Frontend.Features.Services.Interfaces;
+using Frontend.Features.KafkaProducers;
+using Microsoft.Extensions.Options;
 
-namespace Frontend.Features;
+namespace Frontend.Features.Services;
 
 public class LogService : ILogService
 {
     private readonly HttpClient _httpClient;
     private readonly string _baseUrl;
+    private readonly LogProducer _logProducer;
 
-    public LogService()
+    public LogService(IOptions<KafkaSettings> kafkaSettings, ILogger<LogProducer> loggerLogProducer)
     {
         var httpClientHandler = new HttpClientHandler
         {
@@ -19,20 +23,13 @@ public class LogService : ILogService
         
         var host = Environment.GetEnvironmentVariable("ACTION_LOG_HOST") ?? "localhost";
         _baseUrl = $"http://{host}:8086/api/logs";
+
+        _logProducer = new LogProducer(kafkaSettings.Value.BootstrapServers, kafkaSettings.Value.LogTopic, loggerLogProducer);
     }
 
     public async Task SendLog(AddLogRequest request)
     {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
-
-        var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/add", request);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            var errorContent = await response.Content.ReadAsStringAsync();
-            throw new Exception($"Failed to send log: {response.StatusCode}, {errorContent}");
-        }
+        await _logProducer.AddLog(request);
     }
 
     public async Task<IReadOnlyCollection<LogModel>> GetLogs(GetLogsRequest request)
