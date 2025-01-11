@@ -32,7 +32,7 @@ public class LogService : ILogService
         await _logProducer.AddLog(request);
     }
 
-    public async Task<IReadOnlyCollection<LogModel>> GetLogs(GetLogsRequest request)
+    public async Task<GetLogsResponse> GetLogs(GetLogsRequest request)
     {
         if (request == null)
             throw new ArgumentNullException(nameof(request));
@@ -68,6 +68,6 @@ public class LogService : ILogService
         if (result == null)
             throw new Exception("Failed to deserialize logs response.");
 
-        return result.Logs.ToList();
+        return result;
     }
 }
