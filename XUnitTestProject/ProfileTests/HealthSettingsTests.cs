@@ -36,10 +36,18 @@ public class HealthSettingsTests
         var expectedCooldownTime = "120";
         Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", expectedCooldownTime);
 
-        // Act
-        var cooldownTime = HealthSettings.CooldownTime;
+        try
+        {
+            // Act
+            var cooldownTime = HealthSettings.CooldownTime;
 
-        // Assert
-        Assert.Equal(double.Parse(expectedCooldownTime), cooldownTime);
+            // Assert
+            Assert.Equal(double.Parse(expectedCooldownTime), cooldownTime);
+        }
+        finally
+        {
+            // Cleanup
+            Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", null);
+        }
     }
 }

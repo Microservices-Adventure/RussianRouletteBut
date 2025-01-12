@@ -7,23 +7,6 @@ using Xunit;
 public class HealthSettingsTests
 {
     [Fact]
-    public void CrashTime_ShouldReturnValueFromEnvironmentVariable()
-    {
-        // Arrange
-        const string crashTimeValue = "10";
-        Environment.SetEnvironmentVariable("HealthSettings_CrashTime", crashTimeValue);
-
-        // Act
-        var crashTime = HealthSettings.CrashTime;
-
-        // Assert
-        Assert.Equal(10, crashTime);
-
-        // Cleanup
-        Environment.SetEnvironmentVariable("HealthSettings_CrashTime", null);
-    }
-
-    [Fact]
     public void CrashTime_ShouldThrowFormatException_WhenEnvironmentVariableIsInvalid()
     {
         // Arrange

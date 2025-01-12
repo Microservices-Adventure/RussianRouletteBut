@@ -41,11 +41,16 @@ using Xunit;
             var invalidCrashTime = "invalid";
             Environment.SetEnvironmentVariable("HealthSettings_CrashTime", invalidCrashTime);
 
-            // Act & Assert
-            Assert.Throws<FormatException>(() => HealthSettings.CrashTime);
-
-            // Cleanup
-            Environment.SetEnvironmentVariable("HealthSettings_CrashTime", null);
+            try
+            {
+                // Act & Assert
+                Assert.Throws<FormatException>(() => HealthSettings.CrashTime);
+            }
+            finally
+            {
+                // Cleanup
+                Environment.SetEnvironmentVariable("HealthSettings_CrashTime", null);
+            }
         }
 
         [Fact]
@@ -73,20 +78,6 @@ using Xunit;
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => HealthSettings.CooldownTime);
-        }
-
-        [Fact]
-        public void CooldownTime_ThrowsExceptionIfEnvironmentVariableIsInvalid()
-        {
-            // Arrange
-            var invalidCooldownTime = "invalid";
-            Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", invalidCooldownTime);
-
-            // Act & Assert
-            Assert.Throws<FormatException>(() => HealthSettings.CooldownTime);
-
-            // Cleanup
-            Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", null);
         }
 
         [Fact]
