@@ -9,4 +9,5 @@ public class KafkaSettings
     }
     public string RegistrationTopic { get; set; } = null!;
     public string LogTopic { get; set; } = null!;
+    public string ProfileTopic { get; set; } = null!;
 }
