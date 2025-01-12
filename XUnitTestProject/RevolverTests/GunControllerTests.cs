@@ -26,7 +26,7 @@ public class GunControllerTests
         }
 
         [Fact]
-        public void Shoot_ReturnsNotFoundIfServiceNotFound()
+        public async void Shoot_ReturnsNotFoundIfServiceNotFound()
         {
             // Arrange
             var request = new ShootRequestModel
@@ -47,7 +47,7 @@ public class GunControllerTests
             var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object);
 
             // Act
-            var result = controller.Shoot(request);
+            var result = await controller.Shoot(request);
 
             // Assert
             Assert.IsType<NotFoundObjectResult>(result);

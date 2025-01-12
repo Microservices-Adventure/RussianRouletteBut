@@ -33,6 +33,7 @@ public class Startup
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IRevolverService, RevolverService>();
         services.AddScoped<ILogService, LogService>();
+        services.AddScoped<IProfileService, ProfileService>();
 
         services.AddApplicationAuthorization(_configuration);
     }
