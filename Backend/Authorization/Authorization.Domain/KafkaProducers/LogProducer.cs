@@ -3,7 +3,7 @@ using Authorization.Domain.Models;
 using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 
-namespace Authorization.Domain.Kafka;
+namespace Authorization.Domain.KafkaProducers;
 
 public class LogProducer : IDisposable
 {

@@ -25,7 +25,7 @@ public class GunController : ControllerBase
     }
     
     [HttpPost("shoot")]
-    public IActionResult Shoot(ShootRequestModel request)
+    public async Task<IActionResult> Shoot(ShootRequestModel request)
     {
         List<ServiceInfo> services = [];
         foreach (string name in request.Bullets)
@@ -40,13 +40,14 @@ public class GunController : ControllerBase
         }
         
         ServiceInfo serviceInfo = _revolverService.Roll(services);
+        
         if (serviceInfo.ServiceName == "Revolver")
         {
             KillRevolver();
             return Ok(serviceInfo);
         }
 
-        _revolverService.Kill(serviceInfo);
+        await _revolverService.Kill(serviceInfo);
         return Ok(serviceInfo);
     }
 

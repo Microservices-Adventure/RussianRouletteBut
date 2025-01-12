@@ -8,7 +8,5 @@ namespace Profile.Api.Models
         public required string Username { get; init; } = null!;
         public required string Email { get; init; } = null!;
         public required List<DropInfo> History { get; init; } = [];
-
-
     }
 }

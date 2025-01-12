@@ -31,7 +31,7 @@
                     else
                     {
                         <li class="nav-item">
-                            <label class="nav-link app-text-yellow">@User.Identity.Name</label>
+                            <a class="nav-link app-text-yellow" asp-controller="Profile" asp-action="Profile">@User.Identity.Name</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link app-text-yellow" asp-controller="Account" asp-action="Logout">Выйти</a>
