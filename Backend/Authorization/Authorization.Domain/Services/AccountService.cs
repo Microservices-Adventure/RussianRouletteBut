@@ -84,7 +84,7 @@ public class AccountService : IAccountService
                 await _profileProducer.AddProfile(new AddDropInfoByUsernameRequest()
                 {
                     Username = user.UserName,
-                    ServiceName = string.Empty,
+                    ServiceName = "[INFO] Registration Success!",
                     Moment = DateTimeOffset.UtcNow
                 });
                 await _logProducer.AddLog(new AddLogRequest()

@@ -25,13 +25,14 @@ public class ProfileService : IProfileService
         }
 
         string host = Environment.GetEnvironmentVariable("PROFILE_HOST") ?? "localhost";
-        string url = $"http://{host}:8088/api/profile/getuser";
+        string url = $"http://{host}:8088/api/profile/getuser?Username={Uri.EscapeDataString(request.Username)}";
+
 
         HttpResponseMessage response;
 
         try
         {
-            response = await _httpClient.PostAsJsonAsync(url, request);
+            response = await _httpClient.GetAsync(url);
         }
         catch (Exception ex)
         {

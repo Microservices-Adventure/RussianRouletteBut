@@ -15,7 +15,6 @@ public class ProfileController : Controller
     }
 
     [Authorize]
-    [HttpGet]
     public async Task<IActionResult> Profile()
     {
         UserProfileResponse result = await _profileService.GetUserProfile(

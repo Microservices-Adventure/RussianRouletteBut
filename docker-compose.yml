@@ -130,6 +130,7 @@ services:
       - action-log-dbdata:/var/lib/postgresql/action-log/data
     
   profile-db:
+    container_name: profile-db
     image: postgres:latest
     restart: always
     environment:
