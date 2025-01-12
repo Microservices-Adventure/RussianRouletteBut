@@ -36,7 +36,7 @@ public class RegisterConsumer : IDisposable
         _accountService = accountService;
     }
 
-    public async Task Consume(CancellationToken stoppingToken)
+    public virtual async Task Consume(CancellationToken stoppingToken)
     {
         if (stoppingToken.IsCancellationRequested)
         {
@@ -91,7 +91,7 @@ public class RegisterConsumer : IDisposable
         return await _accountService.RegisterUser(userModel, ct);
     } 
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         _consumer.Close();
     }
