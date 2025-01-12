@@ -10,5 +10,6 @@ public class KafkaSettings
     }
     public string Topic { get; set; } = null!;
     public string LogTopic { get; set; } = null!;
+    public string ProfileTopic { get; set; } = null!;
     public string ConsumerGroupId { get; set; } = null!;
 }

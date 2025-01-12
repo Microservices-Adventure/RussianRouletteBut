@@ -1,6 +1,6 @@
 ﻿using Authorization.Domain.Config;
 using Authorization.Domain.Entities;
-using Authorization.Domain.Kafka;
+using Authorization.Domain.KafkaProducers;
 using Authorization.Domain.Models;
 using Authorization.Domain.Services.Interfaces;
 using FluentValidation;
@@ -20,6 +20,7 @@ public class AccountService : IAccountService
     private readonly IValidator<LoginUserModel> _loginUserModelValidator;
     private const string UnauthorizedExceptionMessage = "Username or password is incorrect.";
     private readonly LogProducer _logProducer;
+    private readonly ProfileProducer _profileProducer;
 
     public AccountService(
         UserManager<User> userManager, 
@@ -28,7 +29,8 @@ public class AccountService : IAccountService
         IValidator<RegisterUserModel> registerUserModelValidator,
         IValidator<LoginUserModel> loginUserModelValidator,
         IOptions<KafkaSettings> kafkaSettings,
-        ILogger<LogProducer> logProducer)
+        ILogger<LogProducer> logProducer,
+        ILogger<ProfileProducer> profileProducer)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -36,6 +38,7 @@ public class AccountService : IAccountService
         _registerUserModelValidator = registerUserModelValidator;
         _loginUserModelValidator = loginUserModelValidator;
         _logProducer = new LogProducer(kafkaSettings.Value.BootstrapServers, kafkaSettings.Value.LogTopic, logProducer);
+        _profileProducer = new ProfileProducer(kafkaSettings.Value.BootstrapServers, kafkaSettings.Value.ProfileTopic, profileProducer);
     }
 
     public async Task<LoginUserResult> Login(LoginUserModel loginUserModel, CancellationToken ct)
@@ -78,7 +81,13 @@ public class AccountService : IAccountService
             var roleResult = await _userManager.AddToRoleAsync(user, Roles.User.ToString());
             if (roleResult.Succeeded)
             {
-                _logProducer.AddLog(new AddLogRequest()
+                await _profileProducer.AddProfile(new AddDropInfoByUsernameRequest()
+                {
+                    Username = user.UserName,
+                    ServiceName = string.Empty,
+                    Moment = DateTimeOffset.UtcNow
+                });
+                await _logProducer.AddLog(new AddLogRequest()
                 {
                     Description = "Пользователь успешно зарегистрировался!",
                     Email = user.Email,
@@ -87,7 +96,7 @@ public class AccountService : IAccountService
                     MicroserviceName = "Authorization",
                     Username = user.UserName,
                     Status = "Success",
-                    Moment = DateTimeOffset.Now
+                    Moment = DateTimeOffset.UtcNow
                 });
             }
             return roleResult.Succeeded;
