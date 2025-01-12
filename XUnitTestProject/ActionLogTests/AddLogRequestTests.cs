@@ -3,7 +3,7 @@ using ActionLog.Api.Models;
 namespace XUnitTestProject.ActionLogTests
 {
 
-    public class CooldownModelTests
+    public class AddLogRequestTests
     {
         [Fact]
         public void AddLogRequest_Properties_ShouldBeSetCorrectly()
