@@ -17,15 +17,12 @@ public class AppDbContextTests
 
     public AppDbContextTests()
     {
-        // Мокаем DbSet<User> и DbSet<IdentityRole<long>>
         _mockUsers = new Mock<DbSet<User>>();
         _mockRoles = new Mock<DbSet<IdentityRole<long>>>();
-
-        // Мокаем AppDbContext
+        
         var options = new DbContextOptions<AppDbContext>();
         _mockDbContext = new Mock<AppDbContext>(options);
-
-        // Настраиваем моки для DbContext
+        
         _mockDbContext.Setup(x => x.Users).Returns(_mockUsers.Object);
         _mockDbContext.Setup(x => x.Roles).Returns(_mockRoles.Object);
     }
@@ -85,8 +82,7 @@ public class AppDbContextTests
         // Assert
         _mockRoles.Verify(x => x.Add(It.IsAny<IdentityRole<long>>()), Times.Once);
     }
-
-    // Тестовый класс для вызова защищённого метода OnModelCreating
+    
     private class TestAppDbContext : AppDbContext
     {
         public TestAppDbContext(DbContextOptions<AppDbContext> options) : base(options)
