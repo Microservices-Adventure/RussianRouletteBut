@@ -82,7 +82,9 @@ public class GunControllerTests
             var result = controller.Shoot(request);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            Assert.Equal(servicesParameters.Services.First(), okResult.Value);
         }
 
         [Fact]
@@ -111,6 +113,8 @@ public class GunControllerTests
             var result = controller.Shoot(request);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            Assert.Equal(servicesParameters.Services.First(), okResult.Value);
         }
     }
