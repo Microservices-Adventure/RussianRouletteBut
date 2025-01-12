@@ -1,0 +1,40 @@
+@using Frontend.Entities.Profile.Model
+@{
+    ViewData["Title"] = "Профиль";
+    UserProfileResponse userProfile = (UserProfileResponse) ViewData[nameof(UserProfileResponse)]!;
+}
+<div class="text-center">
+    <h1 class="display-5">@userProfile.Username</h1>
+</div>
+
+<div class="container mt-4">
+    <h2 class="h5">История</h2>
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Service Name</th>
+            <th scope="col">Moment</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (userProfile.History.Any())
+        {
+            foreach (var drop in userProfile.History.Where(drop => !string.IsNullOrEmpty(drop.ServiceName)))
+            {
+                <tr>
+                    <td>@drop.Id</td>
+                    <td>@drop.ServiceName</td>
+                    <td>@drop.Moment.ToString("dd.MM.yyyy HH:mm:ss")</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center">No history available</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
