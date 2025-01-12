@@ -16,8 +16,14 @@ public class ProfileController : Controller
 
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> GetCurrentProfile()
+    public async Task<IActionResult> Profile()
     {
-        return Ok(await _profileService.GetUserProfile(new GetUserProfileRequest() { Username = HttpContext.User.Identity!.Name! }));
+        UserProfileResponse result = await _profileService.GetUserProfile(
+            new GetUserProfileRequest()
+            {
+                Username = HttpContext.User.Identity!.Name!
+            });
+        ViewData[nameof(UserProfileResponse)] = result;
+        return View();
     }
 }
