@@ -28,12 +28,9 @@
     <ProjectReference Include="..\Backend\Authorization\Authorization.Api\Authorization.Api.csproj" />
     <ProjectReference Include="..\Backend\Authorization\Authorization.Domain\Authorization.Domain.csproj" />
     <ProjectReference Include="..\Backend\LifeMonitor\LifeMonitor.Api\LifeMonitor.Api.csproj" />
+    <ProjectReference Include="..\Backend\Profile\Profile.Api\Profile.Api.csproj" />
     <ProjectReference Include="..\Backend\Revolver\Revolver.Api\Revolver.Api.csproj" />
     <ProjectReference Include="..\Backend\Revolver\Revolver.Domain\Revolver.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ProfileTests\" />
   </ItemGroup>
 
 </Project>

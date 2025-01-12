@@ -14,11 +14,19 @@ public class HealthSettingsTests
         var expectedCrashTime = "60";
         Environment.SetEnvironmentVariable("HealthSettings_CrashTime", expectedCrashTime);
 
-        // Act
-        var crashTime = HealthSettings.CrashTime;
+        try
+        {
+            // Act
+            var crashTime = HealthSettings.CrashTime;
 
-        // Assert
-        Assert.Equal(double.Parse(expectedCrashTime), crashTime);
+            // Assert
+            Assert.Equal(double.Parse(expectedCrashTime), crashTime);
+        }
+        finally
+        {
+            // Cleanup
+            Environment.SetEnvironmentVariable("HealthSettings_CrashTime", null);
+        }
     }
 
     [Fact]

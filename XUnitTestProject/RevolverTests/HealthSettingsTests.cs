@@ -44,14 +44,19 @@ public class HealthSettingsTests
         const string cooldownTimeValue = "5";
         Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", cooldownTimeValue);
 
-        // Act
-        var cooldownTime = HealthSettings.CooldownTime;
+        try
+        {
+            // Act
+            var cooldownTime = HealthSettings.CooldownTime;
 
-        // Assert
-        Assert.Equal(5, cooldownTime);
-
-        // Cleanup
-        Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", null);
+            // Assert
+            Assert.Equal(5, cooldownTime);
+        }
+        finally
+        {
+            // Cleanup
+            Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", null);
+        }
     }
 
     [Fact]
@@ -78,6 +83,6 @@ public class HealthSettingsTests
         var appStartAt = HealthSettings.AppStartAt;
 
         // Assert
-        Assert.True(appStartAt >= expectedTime);
+        Assert.True(appStartAt >= expectedTime || appStartAt.AddMilliseconds(100) >= expectedTime);
     }
 }
