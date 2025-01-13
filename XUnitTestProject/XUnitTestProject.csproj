@@ -35,6 +35,7 @@
     <ProjectReference Include="..\Backend\Profile\Profile.Api\Profile.Api.csproj" />
     <ProjectReference Include="..\Backend\Revolver\Revolver.Api\Revolver.Api.csproj" />
     <ProjectReference Include="..\Backend\Revolver\Revolver.Domain\Revolver.Domain.csproj" />
+    <ProjectReference Include="..\Frontend\Frontend.csproj" />
   </ItemGroup>
 
 </Project>
