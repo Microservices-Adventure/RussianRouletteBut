@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace XUnitTestProject.RevolverTests;
 
 using Revolver.Domain.Config;
@@ -66,6 +68,6 @@ public class HealthSettingsTests
         var appStartAt = HealthSettings.AppStartAt;
 
         // Assert
-        Assert.True(appStartAt >= expectedTime || appStartAt.AddMilliseconds(100) >= expectedTime);
+        Assert.True(appStartAt >= expectedTime.AddMilliseconds(-100) && appStartAt <= expectedTime.AddMilliseconds(100));
     }
 }
