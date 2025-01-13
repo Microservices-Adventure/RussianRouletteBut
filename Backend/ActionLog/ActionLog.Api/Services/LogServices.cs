@@ -70,6 +70,9 @@ namespace ActionLog.Api.Services
                     query = query.Where(log => log.Moment <= request.To.Value);
                 }
 
+                // Сортировка по Id в порядке убывания (последние записи сначала)
+                query = query.OrderByDescending(log => log.Id);
+
                 // Пагинация
                 var totalRecords = await query.CountAsync();
                 var logs = await query
