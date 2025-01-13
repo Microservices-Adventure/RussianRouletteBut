@@ -33,6 +33,7 @@ namespace Profile.Api
             });
 
             builder.Services.AddScoped<IDropInfoService, DropInfoService>();
+            builder.Services.AddScoped<IHealthService, HealthService>();
             builder.Services.AddHostedService<ProfileBackgroundService>();
             builder.Services.Configure<KafkaSettings>(configuration.GetSection(nameof(KafkaSettings)));
 

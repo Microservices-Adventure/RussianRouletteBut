@@ -40,15 +40,20 @@ public class GunController : ControllerBase
         }
         
         ServiceInfo serviceInfo = _revolverService.Roll(services);
-        
+        Console.WriteLine("ServiceName: " + serviceInfo.ServiceName);
         if (serviceInfo.ServiceName == "Revolver")
         {
             KillRevolver();
             return Ok(serviceInfo);
         }
 
-        await _revolverService.Kill(serviceInfo);
-        return Ok(serviceInfo);
+        bool result = await _revolverService.Kill(serviceInfo);
+        Console.WriteLine("Result: " + result);
+        if (result)
+        {
+            return Ok(serviceInfo);
+        }
+        return BadRequest(result);
     }
 
     private void KillRevolver()
