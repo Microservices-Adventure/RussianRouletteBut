@@ -1,0 +1,56 @@
+@using Frontend.Entities.LifeMonitor.Model
+@{
+    List<LifeServiceModel> lifes = (List<LifeServiceModel>?) ViewData["Lifes"] ?? [];
+}
+
+<div class="container">
+    <h2>Life Services</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Service Name</th>
+            <th>Is Life</th>
+            <th>Cooldown</th>
+            <th>Seconds Left</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var service in lifes)
+        {
+            <tr>
+                <td>@service.ServiceName</td>
+                <td>
+                    @if (service.IsLife)
+                    {
+                        <span class="badge bg-success">Alive</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Dead</span>
+                    }
+                </td>
+                <td>
+                    @if (service.Cooldown?.IsCooldown == true)
+                    {
+                        <span class="badge bg-warning">On Cooldown</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">No Cooldown</span>
+                    }
+                </td>
+                <td>
+                    @if (service.Cooldown?.IsCooldown == true)
+                    {
+                        <span>@service.Cooldown.SecondsLeft seconds</span>
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
