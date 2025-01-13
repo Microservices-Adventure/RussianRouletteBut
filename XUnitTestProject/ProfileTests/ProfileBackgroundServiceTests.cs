@@ -27,8 +27,7 @@ using Xunit;
             _consumerLoggerMock = new Mock<ILogger<DropConsumer>>();
             _serviceScopeFactoryMock = new Mock<IServiceScopeFactory>();
             _dropInfoServiceMock = new Mock<IDropInfoService>();
-
-            // Настройка моков для IServiceScopeFactory и IServiceProvider
+            
             var serviceScopeMock = new Mock<IServiceScope>();
             var serviceProviderMock = new Mock<IServiceProvider>();
 
@@ -43,8 +42,7 @@ using Xunit;
             _serviceScopeFactoryMock
                 .Setup(x => x.CreateScope())
                 .Returns(serviceScopeMock.Object);
-
-            // Настройка KafkaSettings
+            
             var kafkaSettings = new KafkaSettings
             {
                 BootstrapServers = "localhost:9092",
@@ -55,8 +53,7 @@ using Xunit;
             _kafkaOptionsMock
                 .Setup(x => x.Value)
                 .Returns(kafkaSettings);
-
-            // Создание экземпляра ProfileBackgroundService
+            
             _profileBackgroundService = new ProfileBackgroundService(
                 _kafkaOptionsMock.Object,
                 _consumerLoggerMock.Object,
@@ -76,7 +73,6 @@ using Xunit;
 
             // Assert
             _serviceScopeFactoryMock.Verify(x => x.CreateScope(), Times.Once);
-            // Проверяем, что Scope был создан и освобожден
         }
 
         [Fact]
@@ -88,11 +84,10 @@ using Xunit;
 
             // Act
             await _profileBackgroundService.StartAsync(cancellationToken);
-            cancellationTokenSource.Cancel(); // Имитируем отмену
+            cancellationTokenSource.Cancel(); 
             await _profileBackgroundService.StopAsync(cancellationToken);
 
             // Assert
-            // Проверяем, что сервис корректно обрабатывает отмену
             _serviceScopeFactoryMock.Verify(x => x.CreateScope(), Times.Once);
         }
     }
