@@ -1,0 +1,63 @@
+
+@{
+    
+}
+
+<div class="container">
+    <h2>Жизнь сервисов</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Service Name</th>
+            <th>Is Life</th>
+            <th>Cooldown</th>
+            <th>Seconds Left</th>
+        </tr>
+        </thead>
+        <tbody id="MonitorTbody">
+        
+        </tbody>
+    </table>
+</div>
+
+<script>
+    async function fetchLifes() {
+        try {
+            const response = await fetch('/Monitor/GetLifes');
+            if (!response.ok) throw new Error("Failed to fetch data");
+
+            const lifes = await response.json();
+
+            const tbody = document.getElementById("MonitorTbody");
+            tbody.innerHTML = "";
+
+            lifes.forEach(life => {
+                const row = document.createElement("tr");
+
+                const serviceNameCell = document.createElement("td");
+                serviceNameCell.textContent = life.serviceName;
+                row.appendChild(serviceNameCell);
+
+                const isLifeCell = document.createElement("td");
+                isLifeCell.textContent = life.isLife ? "Yes" : "No";
+                row.appendChild(isLifeCell);
+
+                const cooldownCell = document.createElement("td");
+                cooldownCell.textContent = life.cooldown?.isCooldown ? "Yes" : "No";
+                row.appendChild(cooldownCell);
+
+                const secondsLeftCell = document.createElement("td");
+                secondsLeftCell.textContent = life.cooldown?.secondsLeft ?? "N/A";
+                row.appendChild(secondsLeftCell);
+
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error fetching lifes:", error);
+        }
+    }
+
+    setInterval(fetchLifes, 1000);
+
+    document.addEventListener("DOMContentLoaded", fetchLifes);
+</script>

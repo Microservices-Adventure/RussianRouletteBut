@@ -13,15 +13,18 @@ public class GunController : ControllerBase
     private readonly IRevolverService _revolverService; 
     private readonly IOptionsMonitor<ServicesParameters> _servicesOptions;
     private readonly IHostApplicationLifetime _lifetime;
+    private readonly IHealthService _heartService;
     
     public GunController(
         IRevolverService revolverService, 
         IOptionsMonitor<ServicesParameters> servicesOptions,
-        IHostApplicationLifetime lifetime)
+        IHostApplicationLifetime lifetime,
+        IHealthService heartService)
     {
         _revolverService = revolverService;
         _servicesOptions = servicesOptions;
         _lifetime = lifetime;
+        _heartService = heartService;
     }
     
     [HttpPost("shoot")]
@@ -40,15 +43,27 @@ public class GunController : ControllerBase
         }
         
         ServiceInfo serviceInfo = _revolverService.Roll(services);
-        
+        Console.WriteLine("ServiceName: " + serviceInfo.ServiceName);
         if (serviceInfo.ServiceName == "Revolver")
         {
+            Console.WriteLine("Himself kill request");
+            double cooldownTime = _heartService.CooldownTime();
+            if (cooldownTime > 0)
+            {
+                Console.WriteLine("Cooldown time left: " + cooldownTime);
+                return BadRequest("Cooldown time left: " + cooldownTime);
+            }
             KillRevolver();
             return Ok(serviceInfo);
         }
 
-        await _revolverService.Kill(serviceInfo);
-        return Ok(serviceInfo);
+        bool result = await _revolverService.Kill(serviceInfo);
+        Console.WriteLine("Result: " + result);
+        if (result)
+        {
+            return Ok(serviceInfo);
+        }
+        return BadRequest(result);
     }
 
     private void KillRevolver()

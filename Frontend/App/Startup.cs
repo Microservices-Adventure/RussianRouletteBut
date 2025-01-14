@@ -34,6 +34,7 @@ public class Startup
         services.AddScoped<IRevolverService, RevolverService>();
         services.AddScoped<ILogService, LogService>();
         services.AddScoped<IProfileService, ProfileService>();
+        services.AddScoped<IMonitorService, MonitorService>();
 
         services.AddApplicationAuthorization(_configuration);
     }

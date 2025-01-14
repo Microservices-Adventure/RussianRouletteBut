@@ -23,7 +23,10 @@ public sealed class RevolverService : IRevolverService
         var httpClientHandler = new HttpClientHandler();
         httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
         using var httpClient = new HttpClient(httpClientHandler);
+        Console.WriteLine("Request: " + serviceInfo.Host + "/api/hearth/kill");
         using HttpResponseMessage responseMessage = await httpClient.PostAsync(serviceInfo.Host + "/api/hearth/kill", null);
+        Console.WriteLine(responseMessage.StatusCode);
+        Console.WriteLine(await responseMessage.Content.ReadAsStringAsync());
         return responseMessage.IsSuccessStatusCode;
     }
 }
