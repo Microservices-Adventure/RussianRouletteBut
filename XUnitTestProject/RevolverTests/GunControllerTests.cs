@@ -56,7 +56,7 @@ public class GunControllerTests
         }
 
         [Fact]
-        public void Shoot_ProcessesTheRequestCorrectlyAndSelectsTheService()
+        public async Task Shoot_ProcessesTheRequestCorrectlyAndSelectsTheService()
         {
             // Arrange
             var request = new ShootRequestModel
@@ -79,16 +79,16 @@ public class GunControllerTests
             var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object);
 
             // Act
-            var result = controller.Shoot(request);
+            var result = await controller.Shoot(request); // Используем await
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result); // Теперь результат будет OkObjectResult
             Assert.NotNull(okResult.Value);
             Assert.Equal(servicesParameters.Services.First(), okResult.Value);
         }
 
         [Fact]
-        public void Shoot_ProcessesTheRequestCorrectlyAndSelectsTheRevolverService()
+        public async Task Shoot_ProcessesTheRequestCorrectlyAndSelectsTheRevolverService()
         {
             // Arrange
             var request = new ShootRequestModel
@@ -110,10 +110,10 @@ public class GunControllerTests
             var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object);
 
             // Act
-            var result = controller.Shoot(request);
+            var result = await controller.Shoot(request); // Используем await
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result); // Теперь результат будет OkObjectResult
             Assert.NotNull(okResult.Value);
             Assert.Equal(servicesParameters.Services.First(), okResult.Value);
         }
