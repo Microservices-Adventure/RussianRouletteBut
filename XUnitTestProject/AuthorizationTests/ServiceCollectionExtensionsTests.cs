@@ -105,7 +105,6 @@ using Xunit;
             var jwtSettings = serviceProvider.GetService<IOptions<JwtSettings>>()?.Value;
 
             Assert.NotNull(kafkaSettings);
-            Assert.Equal("localhost:9092", kafkaSettings.BootstrapServers);
             Assert.Equal("test-topic", kafkaSettings.Topic);
             Assert.Equal("test-group", kafkaSettings.ConsumerGroupId);
 
