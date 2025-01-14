@@ -27,8 +27,14 @@ jobs:
           - name: Run unit tests with report
             run: dotnet test ./XUnitTestProject/XUnitTestProject.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
             
+          - name: Install ReportGenerator
+            run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+          - name: Generate HTML report
+            run: reportgenerator -reports:XUnitTestProject/TestResults/test-results.trx -targetdir:./TestResults -reporttypes:Html
+
           - name: Upload test results
             uses: actions/upload-artifact@v4
             with:
               name: test-results
-              path: XUnitTestProject/TestResults/test-results.trx
+              path: ./TestResults
