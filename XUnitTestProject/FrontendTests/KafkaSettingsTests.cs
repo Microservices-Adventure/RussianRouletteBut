@@ -51,8 +51,7 @@ public class KafkaSettingsTests
         {
             BootstrapServers = "default-bootstrap-server:9092"
         };
-
-        // Убедимся, что переменная окружения не установлена
+        
         Environment.SetEnvironmentVariable("ASPNETCORE_Kafka_Bootstrap_Servers", null);
 
         // Act
