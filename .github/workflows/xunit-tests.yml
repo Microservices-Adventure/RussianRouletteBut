@@ -24,23 +24,29 @@ jobs:
           - name: Build the solution
             run: dotnet build ./RussianRouletteBut.sln --configuration Release --no-restore
              
-          - name: Run unit tests with report
-            run: dotnet test ./XUnitTestProject/XUnitTestProject.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
-            
+          - name: Run unit tests with coverage
+            run: dotnet test ./XUnitTestProject/XUnitTestProject.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
+
           - name: Install ReportGenerator
             run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
-          - name: Generate HTML report
-            run: reportgenerator -reports:XUnitTestProject/TestResults/test-results.trx -targetdir:./TestResults -reporttypes:Html
+          - name: Generate HTML coverage report
+            run: reportgenerator -reports:XUnitTestProject/TestResults/**/coverage.cobertura.xml -targetdir:./CoverageReport -reporttypes:Html
 
           - name: Upload test results
             uses: actions/upload-artifact@v4
             with:
               name: test-results
-              path: ./TestResults
+              path: ./XUnitTestProject/TestResults/test-results.trx
+
+          - name: Upload coverage report
+            uses: actions/upload-artifact@v4
+            with:
+              name: coverage-report
+              path: ./CoverageReport
 
           - name: Output artifact download instructions
             run: |
-              echo "HTML отчет доступен для скачивания здесь:"
+              echo "HTML отчет о покрытии тестами доступен для скачивания здесь:"
               echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-              echo "Перейдите на страницу workflow и найдите артефакт 'test-results'."
+              echo "Перейдите на страницу workflow и найдите артефакт 'coverage-report'."
