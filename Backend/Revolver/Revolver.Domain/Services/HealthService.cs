@@ -7,7 +7,9 @@ public class HealthService : IHealthService
 {
     public double CooldownTime()
     {
-        return double.Max(DateTimeOffset.UtcNow.ToUnixTimeSeconds() - HealthSettings.AppStartAt.AddSeconds(HealthSettings.CooldownTime).ToUnixTimeSeconds(), 0);
+        long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        long endTime = HealthSettings.AppStartAt.AddSeconds(HealthSettings.CooldownTime).ToUnixTimeSeconds();
+        return double.Max(endTime - currentTime, 0);
     }
 
     public bool IsLive()

@@ -40,18 +40,24 @@ public class HealthServiceTests
         // Arrange
         var appStartAt = DateTimeOffset.UtcNow.AddSeconds(-10); 
         var cooldownTime = 0;
-        
+    
         Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", cooldownTime.ToString());
         Environment.SetEnvironmentVariable("HealthSettings_AppStartAt", appStartAt.ToUnixTimeSeconds().ToString());
 
-        // Act
-        var result = _healthService.CooldownTime();
+        try
+        {
+            // Act
+            var result = _healthService.CooldownTime();
 
-        // Assert
-        Assert.Equal(0, result); 
-        
-        Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", null);
-        Environment.SetEnvironmentVariable("HealthSettings_AppStartAt", null);
+            // Assert
+            Assert.Equal(0, result); 
+        }
+        finally
+        {
+            // Cleanup
+            Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", null);
+            Environment.SetEnvironmentVariable("HealthSettings_AppStartAt", null);
+        }
     }
 
     [Fact]

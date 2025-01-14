@@ -1,6 +1,6 @@
-using Authorization.Domain.Config;
+using Profile.Api.Config;
 
-namespace XUnitTestProject.AuthorizationTests;
+namespace XUnitTestProject.ProfileTests;
 
 using System;
 using Xunit;

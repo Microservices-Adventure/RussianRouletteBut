@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Frontend.Entities.Account.Lib.Exceptions;
 using Frontend.Entities.Account.Model;
 using Frontend.Features.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
@@ -19,8 +20,9 @@ public class AccountController : Controller
         _logger = logger;
     }
     
-    public IActionResult Login()
+    public IActionResult Login(string? error)
     {
+        ViewData["error"] = error;
         return View();
     }
     
@@ -45,13 +47,29 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel loginModel)
     {
-        var loginResponse = await _accountService.Login(loginModel);
-        
-        HttpContext.Response.Cookies.Append("accessToken", loginResponse.Token);
-        var claims = new List<Claim> { new Claim(ClaimTypes.Name, loginResponse.Username), new Claim(ClaimTypes.Email, loginResponse.Email) };
-        var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-        return RedirectToAction("Index", "Home");
+        try
+        {
+            var loginResponse = await _accountService.Login(loginModel);
+
+            HttpContext.Response.Cookies.Append("accessToken", loginResponse.Token);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, loginResponse.Username), new Claim(ClaimTypes.Email, loginResponse.Email)
+            };
+            var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
+            return RedirectToAction("Index", "Home");
+        }
+        catch (RequestLoginException e)
+        {
+            Console.WriteLine(e);
+            return RedirectToAction("Login", "Account", new { error = "Неправильный логин или пароль" });
+        }
+        catch (Exception e)
+        {
+            return RedirectToAction("Login", "Account", new { error = "Сервис авторизации не справился" });
+        }
     }
 
     [HttpPost]

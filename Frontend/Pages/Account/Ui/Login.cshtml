@@ -3,6 +3,7 @@
 *@
 @{
     ViewData["Title"] = "Вход";
+    string? error = (string?) ViewData["error"];
 }
 <div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
     <div class="container-sm">
@@ -18,6 +19,13 @@
                         <label for="Password">Пароль:</label>
                         <input id="Password" type="password" class="form-control" name="Password" />
                     </div>
+                    @if (error != null)
+                    {
+                        <div class="form-group mb-3">
+                            <label for="Error">Ошибка:</label>
+                            <input id="Error" type="text" class="form-control" name="Text" value="@error" />
+                        </div>
+                    }
                     <button type="submit" id="loginSubmit" class="btn btn-primary">Вход</button>
                 </form>
             </div>

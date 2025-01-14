@@ -20,9 +20,11 @@ public class HearthController : ControllerBase
     [HttpPost("kill")]
     public IActionResult Kill()
     {
+        Console.WriteLine("Kill request");
         double cooldownTime = _healthService.CooldownTime();
         if (cooldownTime > 0)
         {
+            Console.WriteLine("Cooldown time left: " + cooldownTime);
             return BadRequest("Cooldown time left: " + cooldownTime);
         }
         Thread kill = new Thread(() =>

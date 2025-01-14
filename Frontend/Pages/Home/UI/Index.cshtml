@@ -1,18 +1,29 @@
 ﻿@{
     ViewData["Title"] = "Главная";
 }
+<div class="container">
+    <div class="row">
+        <!-- Левая колонка -->
+        <div class="col-md-4">
+            @{ await Html.RenderPartialAsync("~/Pages/LifeMonitor/UI/Monitor.cshtml"); }
+        </div>
 
-<div class="text-center">
-    <h1 class="display-5">Русская рулетка, но...</h1>
-    <p>при каждом выстреле у нас падает один из микросервисов :(</p>
-</div>
-<div>
-    @{
-        await Html.RenderPartialAsync("~/Pages/Revolver/UI/Revolver.cshtml");
-    }
-</div>
-<div class="mt-5">
-    @{
-        await Html.RenderPartialAsync("~/Pages/LogAction/UI/Logs.cshtml");
-    }
+        <!-- Правая колонка с револьвером -->
+        <div class="col-md-8 text-center">
+            <h1 class="display-5">Русская рулетка, но...</h1>
+            <p>при каждом выстреле у нас падает один из микросервисов :(</p>
+            <div>
+                @{
+                    await Html.RenderPartialAsync("~/Pages/Revolver/UI/Revolver.cshtml");
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Лог действий -->
+    <div class="mt-5">
+        @{
+            await Html.RenderPartialAsync("~/Pages/LogAction/UI/Logs.cshtml");
+        }
+    </div>
 </div>

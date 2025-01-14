@@ -17,12 +17,14 @@ public class GunControllerTests
         private readonly Mock<IRevolverService> _revolverServiceMock;
         private readonly Mock<IOptionsMonitor<ServicesParameters>> _servicesOptionsMock;
         private readonly Mock<IHostApplicationLifetime> _lifetimeMock;
+        private readonly Mock<IHealthService> _healthMock;
 
         public GunControllerTests()
         {
             _revolverServiceMock = new Mock<IRevolverService>();
             _servicesOptionsMock = new Mock<IOptionsMonitor<ServicesParameters>>();
             _lifetimeMock = new Mock<IHostApplicationLifetime>();
+            _healthMock = new Mock<IHealthService>();
         }
 
         [Fact]
@@ -44,7 +46,7 @@ public class GunControllerTests
 
             _servicesOptionsMock.Setup(x => x.CurrentValue).Returns(servicesParameters);
 
-            var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object);
+            var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object, _healthMock.Object);
 
             // Act
             var result = await controller.Shoot(request);
@@ -56,7 +58,7 @@ public class GunControllerTests
         }
 
         [Fact]
-        public void Shoot_ProcessesTheRequestCorrectlyAndSelectsTheService()
+        public async Task Shoot_ProcessesTheRequestCorrectlyAndSelectsTheService()
         {
             // Arrange
             var request = new ShootRequestModel
@@ -76,19 +78,19 @@ public class GunControllerTests
             _servicesOptionsMock.Setup(x => x.CurrentValue).Returns(servicesParameters);
             _revolverServiceMock.Setup(x => x.Roll(It.IsAny<List<ServiceInfo>>())).Returns(servicesParameters.Services.First());
 
-            var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object);
+            var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object, _healthMock.Object);
 
             // Act
-            var result = controller.Shoot(request);
+            var result = await controller.Shoot(request); // Используем await
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result); // Теперь результат будет OkObjectResult
             Assert.NotNull(okResult.Value);
             Assert.Equal(servicesParameters.Services.First(), okResult.Value);
         }
 
         [Fact]
-        public void Shoot_ProcessesTheRequestCorrectlyAndSelectsTheRevolverService()
+        public async Task Shoot_ProcessesTheRequestCorrectlyAndSelectsTheRevolverService()
         {
             // Arrange
             var request = new ShootRequestModel
@@ -107,13 +109,13 @@ public class GunControllerTests
             _servicesOptionsMock.Setup(x => x.CurrentValue).Returns(servicesParameters);
             _revolverServiceMock.Setup(x => x.Roll(It.IsAny<List<ServiceInfo>>())).Returns(servicesParameters.Services.First());
 
-            var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object);
+            var controller = new GunController(_revolverServiceMock.Object, _servicesOptionsMock.Object, _lifetimeMock.Object, _healthMock.Object);
 
             // Act
-            var result = controller.Shoot(request);
+            var result = await controller.Shoot(request); // Используем await
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result); // Теперь результат будет OkObjectResult
             Assert.NotNull(okResult.Value);
             Assert.Equal(servicesParameters.Services.First(), okResult.Value);
         }
