@@ -1,3 +1,4 @@
+using Frontend.Entities.LifeMonitor.Model;
 using Frontend.Features.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,6 @@ public class MonitorController : Controller
     [HttpGet]
     public async Task<IActionResult> GetLifes()
     {
-        ViewData["Lifes"] = (await _monitorService.GetLifes()).ToList();
-        return Ok();
+        return Ok((await _monitorService.GetLifes()).ToList());
     }
 }

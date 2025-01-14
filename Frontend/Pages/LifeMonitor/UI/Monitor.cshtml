@@ -1,10 +1,10 @@
-@using Frontend.Entities.LifeMonitor.Model
+
 @{
-    List<LifeServiceModel> lifes = (List<LifeServiceModel>?) ViewData["Lifes"] ?? [];
+    
 }
 
 <div class="container">
-    <h2>Life Services</h2>
+    <h2>Жизнь сервисов</h2>
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -14,43 +14,50 @@
             <th>Seconds Left</th>
         </tr>
         </thead>
-        <tbody>
-        @foreach (var service in lifes)
-        {
-            <tr>
-                <td>@service.ServiceName</td>
-                <td>
-                    @if (service.IsLife)
-                    {
-                        <span class="badge bg-success">Alive</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">Dead</span>
-                    }
-                </td>
-                <td>
-                    @if (service.Cooldown?.IsCooldown == true)
-                    {
-                        <span class="badge bg-warning">On Cooldown</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">No Cooldown</span>
-                    }
-                </td>
-                <td>
-                    @if (service.Cooldown?.IsCooldown == true)
-                    {
-                        <span>@service.Cooldown.SecondsLeft seconds</span>
-                    }
-                    else
-                    {
-                        <span>N/A</span>
-                    }
-                </td>
-            </tr>
-        }
+        <tbody id="MonitorTbody">
+        
         </tbody>
     </table>
 </div>
+
+<script>
+    async function fetchLifes() {
+        try {
+            const response = await fetch('/Monitor/GetLifes');
+            if (!response.ok) throw new Error("Failed to fetch data");
+
+            const lifes = await response.json();
+
+            const tbody = document.getElementById("MonitorTbody");
+            tbody.innerHTML = "";
+
+            lifes.forEach(life => {
+                const row = document.createElement("tr");
+
+                const serviceNameCell = document.createElement("td");
+                serviceNameCell.textContent = life.serviceName;
+                row.appendChild(serviceNameCell);
+
+                const isLifeCell = document.createElement("td");
+                isLifeCell.textContent = life.isLife ? "Yes" : "No";
+                row.appendChild(isLifeCell);
+
+                const cooldownCell = document.createElement("td");
+                cooldownCell.textContent = life.cooldown?.isCooldown ? "Yes" : "No";
+                row.appendChild(cooldownCell);
+
+                const secondsLeftCell = document.createElement("td");
+                secondsLeftCell.textContent = life.cooldown?.secondsLeft ?? "N/A";
+                row.appendChild(secondsLeftCell);
+
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error fetching lifes:", error);
+        }
+    }
+
+    setInterval(fetchLifes, 1000);
+
+    document.addEventListener("DOMContentLoaded", fetchLifes);
+</script>

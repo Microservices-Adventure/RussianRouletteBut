@@ -11,47 +11,56 @@ namespace LifeMonitor.Api.Services
             var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
             using var httpClient = new HttpClient(httpClientHandler);
-            HttpResponseMessage response = await httpClient.GetAsync("http://" + serviceHost + ":" + port + "/api/hearth/isLive");
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string jsonResponse = await response.Content.ReadAsStringAsync();
-                bool isLive = JsonSerializer.Deserialize<bool>(jsonResponse);
-                LifeServiceModel lifeService = new LifeServiceModel()
+                using HttpResponseMessage response = await httpClient.GetAsync("http://" + serviceHost + ":" + port + "/api/hearth/isLive");
+                Console.WriteLine(response);
+                if (response.IsSuccessStatusCode)
                 {
-                    IsLife = isLive,
-                    ServiceName = serviceHost
-                };
+                    bool isLive = await response.Content.ReadFromJsonAsync<bool>();
+                    LifeServiceModel lifeService = new LifeServiceModel()
+                    {
+                        IsLife = isLive,
+                        ServiceName = serviceHost
+                    };
 
-                if (!isLive)
-                {
-                    return lifeService;
+                    if (!isLive)
+                    {
+                        return lifeService;
+                    }
+
+                    using HttpResponseMessage responseKill = await httpClient.GetAsync("http://" + serviceHost + ":" + port + "/api/hearth/killAvailable");
+
+                    Console.WriteLine(responseKill);
+                    if (responseKill.IsSuccessStatusCode)
+                    {
+                        CooldownModel jsonResponseCooldown = (await responseKill.Content.ReadFromJsonAsync<CooldownModel>())!;
+                        return lifeService with { Cooldown = jsonResponseCooldown };
+
+                    }
+
+                    return new LifeServiceModel()
+                    {
+                        IsLife = false,
+                        ServiceName = serviceHost
+                    };
                 }
-
-                HttpResponseMessage responseKill = await httpClient.GetAsync("http://" + serviceHost + ":" + port + "/api/hearth/killAvailable");
-
-                if (responseKill.IsSuccessStatusCode)
-                {
-                    CooldownModel jsonResponseCooldown = (await response.Content.ReadFromJsonAsync<CooldownModel>())!;
-                    return lifeService with { Cooldown = jsonResponseCooldown };
-
-                }
-
 
                 return new LifeServiceModel()
                 {
                     IsLife = false,
                     ServiceName = serviceHost
                 };
-
-
-
             }
-
-            return new LifeServiceModel()
+            catch (Exception e)
             {
-                IsLife = false,
-                ServiceName = serviceHost
-            };
+                Console.WriteLine(e.Message);
+                return new LifeServiceModel()
+                {
+                    IsLife = false,
+                    ServiceName = serviceHost
+                };
+            }
         }
 
 

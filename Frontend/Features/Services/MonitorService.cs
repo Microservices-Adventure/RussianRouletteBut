@@ -28,11 +28,9 @@ public class MonitorService : IMonitorService
 
             response.EnsureSuccessStatusCode();
 
-            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var jsonResponse = await response.Content.ReadFromJsonAsync<List<LifeServiceModel>>();
 
-            var lifes = JsonSerializer.Deserialize<List<LifeServiceModel>>(jsonResponse)!;
-
-            return lifes.AsReadOnly();
+            return jsonResponse;
         }
         catch (HttpRequestException ex)
         {
