@@ -38,3 +38,9 @@ jobs:
             with:
               name: test-results
               path: ./TestResults
+
+          - name: Output artifact download instructions
+            run: |
+              echo "HTML отчет доступен для скачивания здесь:"
+              echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              echo "Перейдите на страницу workflow и найдите артефакт 'test-results'."
