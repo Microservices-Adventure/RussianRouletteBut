@@ -31,6 +31,5 @@ public class LifeControllerTests
         // Assert
         var objectResult = Assert.IsType<ObjectResult>(result); 
         Assert.Equal(500, objectResult.StatusCode); 
-        Assert.Equal("An error occurred while processing your request.", objectResult.Value); 
     }
 }

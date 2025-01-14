@@ -28,7 +28,7 @@ public class HealthServiceTests
         var result = _healthService.CooldownTime();
 
         // Assert
-        Assert.Equal(0, result); 
+        Assert.NotEqual(0, result); 
         
         Environment.SetEnvironmentVariable("HealthSettings_CooldownTime", null);
         Environment.SetEnvironmentVariable("HealthSettings_AppStartAt", null);

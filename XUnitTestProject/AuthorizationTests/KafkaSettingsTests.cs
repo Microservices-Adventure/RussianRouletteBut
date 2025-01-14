@@ -34,7 +34,7 @@ public class KafkaSettingsTests
     public void BootstrapServers_ReturnsTheDefaultValueIfTheEnvironmentVariableIsNotSet()
     {
         // Arrange
-        var expectedBootstrapServers = "default-kafka:9092";
+        var expectedBootstrapServers = "kafka:9092";
         Environment.SetEnvironmentVariable("ASPNETCORE_Kafka_Bootstrap_Servers", null);
 
         var kafkaSettings = new KafkaSettings

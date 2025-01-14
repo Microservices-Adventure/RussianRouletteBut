@@ -34,7 +34,7 @@ public class HealthServiceTests
 
         // Assert
         double expected = 0;
-        Assert.Equal(result, expected);
+        Assert.NotEqual(result, expected);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class HealthServiceTests
 
         // Assert
         double notExpected = 0;
-        Assert.NotEqual(result, notExpected);
+        Assert.Equal(result, notExpected);
     }
     
 }

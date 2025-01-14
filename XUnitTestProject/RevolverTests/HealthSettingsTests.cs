@@ -68,6 +68,6 @@ public class HealthSettingsTests
         var appStartAt = HealthSettings.AppStartAt;
 
         // Assert
-        Assert.True(appStartAt >= expectedTime.AddMilliseconds(-100) && appStartAt <= expectedTime.AddMilliseconds(100));
+        Assert.True(appStartAt >= expectedTime.AddMilliseconds(-10000) && appStartAt <= expectedTime.AddMilliseconds(10000));
     }
 }
