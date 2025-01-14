@@ -1,4 +1,5 @@
 using Frontend.Entities.Account.Model;
+using Frontend.Entities.ActionLog;
 using Frontend.Entities.ErrorViewModel.Model;
 using Frontend.Entities.LifeMonitor.Model;
 using Frontend.Entities.Profile.Model;
@@ -745,5 +746,314 @@ public class LoginResponseTests
 
             // Assert
             Assert.Empty(shootRequest.Bullets);
+        }
+    }
+    
+    public class LogModelTests
+    {
+        [Fact]
+        public void LogModel_ShouldInitializeWithDefaultValues()
+        {
+            // Arrange & Act
+            var logModel = new LogModel();
+
+            // Assert
+            Assert.Equal(0, logModel.Id);
+            Assert.Null(logModel.Username);
+            Assert.Null(logModel.Email);
+            Assert.Equal(0, logModel.MicroserviceId);
+            Assert.Null(logModel.MicroserviceName);
+            Assert.Null(logModel.Description);
+            Assert.Null(logModel.Status);
+            Assert.Null(logModel.Error);
+            Assert.Equal(default(DateTimeOffset), logModel.Moment);
+        }
+
+        [Fact]
+        public void LogModel_ShouldSetPropertiesCorrectly()
+        {
+            // Arrange
+            var id = 1L;
+            var username = "testUser";
+            var email = "test@example.com";
+            var microserviceId = 123L;
+            var microserviceName = "TestService";
+            var description = "Test description";
+            var status = "Success";
+            var error = "No error";
+            var moment = DateTimeOffset.UtcNow;
+
+            // Act
+            var logModel = new LogModel
+            {
+                Id = id,
+                Username = username,
+                Email = email,
+                MicroserviceId = microserviceId,
+                MicroserviceName = microserviceName,
+                Description = description,
+                Status = status,
+                Error = error,
+                Moment = moment
+            };
+
+            // Assert
+            Assert.Equal(id, logModel.Id);
+            Assert.Equal(username, logModel.Username);
+            Assert.Equal(email, logModel.Email);
+            Assert.Equal(microserviceId, logModel.MicroserviceId);
+            Assert.Equal(microserviceName, logModel.MicroserviceName);
+            Assert.Equal(description, logModel.Description);
+            Assert.Equal(status, logModel.Status);
+            Assert.Equal(error, logModel.Error);
+            Assert.Equal(moment, logModel.Moment);
+        }
+    }
+    
+    public class AddLogRequestTests
+    {
+        [Fact]
+        public void AddLogRequest_ShouldInitializeWithDefaultValues()
+        {
+            // Arrange & Act
+            var addLogRequest = new AddLogRequest();
+
+            // Assert
+            Assert.Null(addLogRequest.Username);
+            Assert.Null(addLogRequest.Email);
+            Assert.Equal(0, addLogRequest.MicroserviceId);
+            Assert.Null(addLogRequest.MicroserviceName);
+            Assert.Null(addLogRequest.Description);
+            Assert.Null(addLogRequest.Status);
+            Assert.Null(addLogRequest.Error);
+            Assert.Equal(default(DateTimeOffset), addLogRequest.Moment);
+        }
+
+        [Fact]
+        public void AddLogRequest_ShouldSetPropertiesCorrectly()
+        {
+            // Arrange
+            var username = "testUser";
+            var email = "test@example.com";
+            var microserviceId = 123L;
+            var microserviceName = "TestService";
+            var description = "Test description";
+            var status = "Success";
+            var error = "No error";
+            var moment = DateTimeOffset.UtcNow;
+
+            // Act
+            var addLogRequest = new AddLogRequest
+            {
+                Username = username,
+                Email = email,
+                MicroserviceId = microserviceId,
+                MicroserviceName = microserviceName,
+                Description = description,
+                Status = status,
+                Error = error,
+                Moment = moment
+            };
+
+            // Assert
+            Assert.Equal(username, addLogRequest.Username);
+            Assert.Equal(email, addLogRequest.Email);
+            Assert.Equal(microserviceId, addLogRequest.MicroserviceId);
+            Assert.Equal(microserviceName, addLogRequest.MicroserviceName);
+            Assert.Equal(description, addLogRequest.Description);
+            Assert.Equal(status, addLogRequest.Status);
+            Assert.Equal(error, addLogRequest.Error);
+            Assert.Equal(moment, addLogRequest.Moment);
+        }
+    }
+    
+    public class GetLogsRequestTests
+    {
+        [Fact]
+        public void GetLogsRequest_ShouldInitializeWithDefaultValues()
+        {
+            // Arrange & Act
+            var getLogsRequest = new GetLogsRequest();
+
+            // Assert
+            Assert.Equal(1, getLogsRequest.Page);
+            Assert.Equal(10, getLogsRequest.Size);
+            Assert.Null(getLogsRequest.Username);
+            Assert.Null(getLogsRequest.Email);
+            Assert.Null(getLogsRequest.MicroserviceId);
+            Assert.Null(getLogsRequest.MicroserviceName);
+            Assert.Null(getLogsRequest.Description);
+            Assert.Null(getLogsRequest.Status);
+            Assert.Null(getLogsRequest.HasError);
+            Assert.Null(getLogsRequest.From);
+            Assert.Null(getLogsRequest.To);
+        }
+
+        [Fact]
+        public void GetLogsRequest_ShouldSetPropertiesCorrectly()
+        {
+            // Arrange
+            var page = 2L;
+            var size = 20L;
+            var username = "testUser";
+            var email = "test@example.com";
+            var microserviceId = 123L;
+            var microserviceName = "TestService";
+            var description = "Test description";
+            var status = "Success";
+            var hasError = true;
+            var from = DateTimeOffset.UtcNow.AddDays(-1);
+            var to = DateTimeOffset.UtcNow;
+
+            // Act
+            var getLogsRequest = new GetLogsRequest
+            {
+                Page = page,
+                Size = size,
+                Username = username,
+                Email = email,
+                MicroserviceId = microserviceId,
+                MicroserviceName = microserviceName,
+                Description = description,
+                Status = status,
+                HasError = hasError,
+                From = from,
+                To = to
+            };
+
+            // Assert
+            Assert.Equal(page, getLogsRequest.Page);
+            Assert.Equal(size, getLogsRequest.Size);
+            Assert.Equal(username, getLogsRequest.Username);
+            Assert.Equal(email, getLogsRequest.Email);
+            Assert.Equal(microserviceId, getLogsRequest.MicroserviceId);
+            Assert.Equal(microserviceName, getLogsRequest.MicroserviceName);
+            Assert.Equal(description, getLogsRequest.Description);
+            Assert.Equal(status, getLogsRequest.Status);
+            Assert.Equal(hasError, getLogsRequest.HasError);
+            Assert.Equal(from, getLogsRequest.From);
+            Assert.Equal(to, getLogsRequest.To);
+        }
+
+        [Fact]
+        public void GetLogsRequest_ShouldAllowNullValuesForOptionalProperties()
+        {
+            // Arrange
+            var getLogsRequest = new GetLogsRequest
+            {
+                Username = null,
+                Email = null,
+                MicroserviceId = null,
+                MicroserviceName = null,
+                Description = null,
+                Status = null,
+                HasError = null,
+                From = null,
+                To = null
+            };
+
+            // Assert
+            Assert.Null(getLogsRequest.Username);
+            Assert.Null(getLogsRequest.Email);
+            Assert.Null(getLogsRequest.MicroserviceId);
+            Assert.Null(getLogsRequest.MicroserviceName);
+            Assert.Null(getLogsRequest.Description);
+            Assert.Null(getLogsRequest.Status);
+            Assert.Null(getLogsRequest.HasError);
+            Assert.Null(getLogsRequest.From);
+            Assert.Null(getLogsRequest.To);
+        }
+    }
+    
+    public class GetLogsResponseTests
+    {
+        [Fact]
+        public void GetLogsResponse_ShouldInitializeWithProvidedValues()
+        {
+            // Arrange
+            var totalRecords = 100;
+            var logs = new List<LogModel>
+            {
+                new LogModel
+                {
+                    Id = 1,
+                    Username = "testUser",
+                    Email = "test@example.com",
+                    MicroserviceId = 123,
+                    MicroserviceName = "TestService",
+                    Description = "Test description",
+                    Status = "Success",
+                    Error = "No error",
+                    Moment = DateTimeOffset.UtcNow
+                }
+            };
+
+            // Act
+            var getLogsResponse = new GetLogsResponse
+            {
+                TotalRecords = totalRecords,
+                Logs = logs
+            };
+
+            // Assert
+            Assert.Equal(totalRecords, getLogsResponse.TotalRecords);
+            Assert.Equal(logs, getLogsResponse.Logs);
+        }
+
+        [Fact]
+        public void GetLogsResponse_ShouldAllowEmptyLogs()
+        {
+            // Arrange
+            var totalRecords = 100;
+            var logs = new List<LogModel>();
+
+            // Act
+            var getLogsResponse = new GetLogsResponse
+            {
+                TotalRecords = totalRecords,
+                Logs = logs
+            };
+
+            // Assert
+            Assert.Equal(totalRecords, getLogsResponse.TotalRecords);
+            Assert.Empty(getLogsResponse.Logs);
+        }
+
+        [Fact]
+        public void GetLogsResponse_ShouldHaveValueEquality()
+        {
+            // Arrange
+            var totalRecords = 100;
+            var logs = new List<LogModel>
+            {
+                new LogModel
+                {
+                    Id = 1,
+                    Username = "testUser",
+                    Email = "test@example.com",
+                    MicroserviceId = 123,
+                    MicroserviceName = "TestService",
+                    Description = "Test description",
+                    Status = "Success",
+                    Error = "No error",
+                    Moment = DateTimeOffset.UtcNow
+                }
+            };
+
+            var getLogsResponse1 = new GetLogsResponse
+            {
+                TotalRecords = totalRecords,
+                Logs = logs
+            };
+
+            var getLogsResponse2 = new GetLogsResponse
+            {
+                TotalRecords = totalRecords,
+                Logs = logs
+            };
+
+            // Act & Assert
+            Assert.Equal(getLogsResponse1, getLogsResponse2);
+            Assert.True(getLogsResponse1 == getLogsResponse2);
         }
     }
